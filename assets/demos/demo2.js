@@ -1,3 +1,5 @@
+'use strict';
+
 {
   const canvas = document.getElementById('demo2');
   const ctx = canvas.getContext('2d');
