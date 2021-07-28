@@ -22,3 +22,7 @@ h3 {
 h4 {
   margin: .5rem 0;
 }
+
+.MathJax.CtxtMenu_Attached_0 {
+  overflow-y: scroll;
+}
