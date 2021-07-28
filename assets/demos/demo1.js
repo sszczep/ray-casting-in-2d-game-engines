@@ -39,9 +39,7 @@
     return segments.map(segment => getIntersectionPoint(ray, segment)).filter(point => point !== null);
   }
 
-  function draw(event) {
-    const mousePos = getMousePosition(event);
-
+  function draw(mousePos) {
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -67,5 +65,15 @@
     });
   }
 
-  window.addEventListener('mousemove', draw);
+  window.addEventListener('mousemove', event => {
+    const mousePos = getMousePosition(event);
+    if(  
+         mousePos.x < 0 || mousePos.x > canvas.width
+      || mousePos.y < 0 || mousePos.y > canvas.height
+    ) return;
+
+    draw(mousePos);
+  });
+
+  draw({ x: canvas.width, y: canvas.height  / 2 });
 }
