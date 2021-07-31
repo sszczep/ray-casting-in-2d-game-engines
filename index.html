@@ -21,6 +21,8 @@
     <!-- Demos -->
     <script src="assets/demos/demo1.js" async></script>
     <script src="assets/demos/demo2.js" async></script>
+    <script src="assets/demos/demo3.js" async></script>
+    <script src="assets/demos/demo4.js" async></script>
 
     <title>Ray casting in 2D game engines</title>
   </head>
@@ -49,7 +51,12 @@
                 <nav class="nav nav-pills flex-column ms-3">
                   <a class="nav-link" href="#deriving-line-parametric-equation">Deriving line parametric equation</a>
                   <a class="nav-link" href="#calculating-intersection-point">Calculating the intersection point</a>
-                  <a class="nav-link" href="#finding-closest-intersection">Finding the closest intersection point</a>
+                  <a class="nav-link" href="#finding-closest-intersection-point">Finding the closest intersection point</a>
+                </nav>
+                <a class="nav-link" href="#casting-rays">Casting rays</a>
+                <nav class="nav nav-pills flex-column ms-3">
+                  <a class="nav-link" href="#casting-rays-by-offset-angle">Casting rays by offset angle</a>
+                  <a class="nav-link" href="#casting-rays-on-vertices">Casting rays on vertices</a>
                 </nav>
               </nav>
             </nav>
@@ -220,7 +227,7 @@
             <figcaption class="figure-caption">Demo 1 - all intersection points</figcaption>
           </figure>
 
-          <h4 id="finding-closest-intersection">Finding the closest intersection</h4>
+          <h4 id="finding-closest-intersection-point">Finding the closest intersection point</h4>
           <p>
             We only need the closest intersection point to properly draw visible area. Naive solution would be to calculate distances between ray starting point and intersection points using <i>Pythagorean Theorem</i>: \(\sqrt{(C_x - P_x) ^ 2 + (C_y - P_y) ^ 2}\). Remember the line equation parameter though? I have already mentioned that we can use it as a scale factor. As we want to compare distances on ray, we can check for the smallest \(r\) parameter value.
             \[
@@ -230,6 +237,50 @@
           <figure class="figure my-3 mx-auto d-block text-center">
             <canvas id="demo2" class="figure-img img-fluid"></canvas>
             <figcaption class="figure-caption">Demo 2 - the closest intersection point</figcaption>
+          </figure>
+
+          <h3 id="casting-rays">Casting rays</h3>
+          <p>
+            In the following section we will go through two different ways rays might be cast. We will compare them and mention their pros and cons. 
+          </p>
+
+          <h4 id="casting-rays-by-offset-angle">Casting rays by offset angle</h4>
+          <p>
+            First way is to cast rays in all directions by specified offset angle. For instance, we could cast 30 rays in total offseted by \(12^\circ\). Let's see how to generate all those rays first.
+          </p>
+          <p>
+            Let \(P_1 = (x_1, y_1)\) be an anchor point of our rays, and let \(P_2 = (x_2, y_2)\) be a some point on a line going through \(P_1\) at angle \(\phi\):
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <img src="assets/images/angle-offset.png" class="figure-img img-fluid" alt="Line from given point at some angle">
+            <figcaption class="figure-caption">Line from given point at some angle</figcaption>
+          </figure>
+          <p>
+            We can define \(x_2\) as \(x_1 + dx\) and \(y_2\) as \(y_1 - dy\) (our y-axis is inverted hence why the minus sign).<br>
+            Now we need to derive formulas for \(dx\) and \(dy\):
+            \[
+              \begin{align}
+                sin(\phi) &= \tfrac{dy}{\mathit{dist}} \Rightarrow dy = \mathit{dist} * sin(\phi) \\
+                cos(\phi) &= \tfrac{dx}{\mathit{dist}} \Rightarrow dx = \mathit{dist} * cos(\phi)
+              \end{align}
+            \]
+            \(\mathit{dist}\) in our case has an arbitrary value (we are looking for any point on the line), so we are safe to assume \(\mathit{dist} = 1\) to simplify the calculations. Having it all considered, \(P_2 = (x_1 + sin(\phi), y_1 - cos(\phi))\), where \(\phi\) is our angle offset. 
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <canvas id="demo3" class="figure-img img-fluid"></canvas>
+            <figcaption class="figure-caption">Demo 3 - casting rays by offset angle</figcaption>
+          </figure>
+          <p>
+            Please note that in demo I have used \(\mathit{dist} = 1000\) for better ray visualization.
+          </p>
+
+          <h4 id="casting-rays-on-vertices">Casting rays on vertices</h4>
+          <p>
+            Casting rays on vertices is most likely your go-to solution. Instead of casting rays in all directions, we can simply cast them on our polygons' vertices. Depending on the number of vertices, we can save computing power on not casting useless rays. Throughout next sections you will see how does it impact animation smoothness and also learn how to further optimize the whole process.
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <canvas id="demo4" class="figure-img img-fluid"></canvas>
+            <figcaption class="figure-caption">Demo 4 - casting rays on vertices</figcaption>
           </figure>
         </div>
       </div>

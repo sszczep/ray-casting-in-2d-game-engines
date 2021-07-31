@@ -1,13 +1,13 @@
 'use strict';
 
 {
-  const canvas = document.getElementById('demo2');
+  const canvas = document.getElementById('demo3');
   const ctx = canvas.getContext('2d');
+
+  const angleOffset = 12;
 
   canvas.width = 600;
   canvas.height = 300;
-
-  const rayAnchor = { x: 0, y: 150 };
 
   const lineSegments = [
     [{ x: 0, y: 0 }, { x: 600, y: 0 }],
@@ -51,8 +51,12 @@
     }, null);
   }
 
-  function getIntersectionPoints(ray, segments) {
-    return segments.map(segment => getIntersectionPoint(ray, segment)).filter(point => point !== null);
+  const dist = 1000;
+  function getAngleOffsetPoint(point, angle) {
+    return {
+      x: point.x + dist * Math.sin(Math.PI / 180 * angle),
+      y: point.y - dist * Math.cos(Math.PI / 180 * angle),
+    };
   }
 
   function draw(mousePos) {
@@ -67,25 +71,22 @@
       ctx.stroke();
     });
 
-    ctx.strokeStyle = 'blue';
-    ctx.beginPath();
-    ctx.moveTo(rayAnchor.x, rayAnchor.y);
-    ctx.lineTo(mousePos.x, mousePos.y);
-    ctx.stroke();
+    for(let angle = 0; angle < 360; angle += angleOffset) {
+      const offsetPoint = getAngleOffsetPoint(mousePos, angle);
 
-    ctx.fillStyle = 'grey';
-    getIntersectionPoints([rayAnchor, mousePos], lineSegments).forEach(point => {
+      ctx.strokeStyle = 'blue';
       ctx.beginPath();
-      ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI);
-      ctx.fill();
-    });
+      ctx.moveTo(mousePos.x, mousePos.y);
+      ctx.lineTo(offsetPoint.x, offsetPoint.y);
+      ctx.stroke();
 
-    const closestPoint = getClosestIntersectionPoint([rayAnchor, mousePos], lineSegments);
-    if(closestPoint !== null) {
-      ctx.fillStyle = 'red';
-      ctx.beginPath();
-      ctx.arc(closestPoint.x, closestPoint.y, 5, 0, 2 * Math.PI);
-      ctx.fill();
+      const closestPoint = getClosestIntersectionPoint([mousePos, offsetPoint], lineSegments);
+      if(closestPoint !== null) {
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(closestPoint.x, closestPoint.y, 5, 0, 2 * Math.PI);
+        ctx.fill();
+      }
     }
   }
 

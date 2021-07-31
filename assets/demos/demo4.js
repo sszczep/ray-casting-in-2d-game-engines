@@ -1,13 +1,11 @@
 'use strict';
 
 {
-  const canvas = document.getElementById('demo2');
+  const canvas = document.getElementById('demo4');
   const ctx = canvas.getContext('2d');
 
   canvas.width = 600;
   canvas.height = 300;
-
-  const rayAnchor = { x: 0, y: 150 };
 
   const lineSegments = [
     [{ x: 0, y: 0 }, { x: 600, y: 0 }],
@@ -20,6 +18,11 @@
     [{ x: 400, y: 50 }, { x: 400, y: 250 }],
     [{ x: 500, y: 50 }, { x: 500, y: 250 }],
   ];
+
+  // In production code, you might want to filter only unique vertices
+  const vertices = lineSegments.reduce((vertices, segment) => {
+    return [...vertices, ...segment];
+  }, []);
 
   function getMousePosition(event) {
     const rect = canvas.getBoundingClientRect();
@@ -51,10 +54,6 @@
     }, null);
   }
 
-  function getIntersectionPoints(ray, segments) {
-    return segments.map(segment => getIntersectionPoint(ray, segment)).filter(point => point !== null);
-  }
-
   function draw(mousePos) {
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -67,26 +66,21 @@
       ctx.stroke();
     });
 
-    ctx.strokeStyle = 'blue';
-    ctx.beginPath();
-    ctx.moveTo(rayAnchor.x, rayAnchor.y);
-    ctx.lineTo(mousePos.x, mousePos.y);
-    ctx.stroke();
-
-    ctx.fillStyle = 'grey';
-    getIntersectionPoints([rayAnchor, mousePos], lineSegments).forEach(point => {
+    vertices.forEach(vertex => {
+      ctx.strokeStyle = 'blue';
       ctx.beginPath();
-      ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI);
-      ctx.fill();
+      ctx.moveTo(mousePos.x, mousePos.y);
+      ctx.lineTo(vertex.x, vertex.y);
+      ctx.stroke();
+
+      const closestPoint = getClosestIntersectionPoint([mousePos, vertex], lineSegments);
+      if(closestPoint !== null) {
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(closestPoint.x, closestPoint.y, 5, 0, 2 * Math.PI);
+        ctx.fill();
+      }
     });
-
-    const closestPoint = getClosestIntersectionPoint([rayAnchor, mousePos], lineSegments);
-    if(closestPoint !== null) {
-      ctx.fillStyle = 'red';
-      ctx.beginPath();
-      ctx.arc(closestPoint.x, closestPoint.y, 5, 0, 2 * Math.PI);
-      ctx.fill();
-    }
   }
 
   window.addEventListener('mousemove', event => {
