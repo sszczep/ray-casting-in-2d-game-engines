@@ -100,5 +100,5 @@
     draw(mousePos);
   });
 
-  draw({ x: canvas.width, y: canvas.height  / 2 });
+  draw({ x: canvas.width / 2, y: canvas.height / 2 });
 }
