@@ -1,13 +1,11 @@
 'use strict';
 
 {
-  const canvas = document.getElementById('demo3');
+  const canvas = document.getElementById('demo6');
   const ctx = canvas.getContext('2d');
 
   canvas.width = 600;
   canvas.height = 300;
-
-  const angleOffset = 12;
 
   const lineSegments = [
     [{ x: 0, y: 0 }, { x: 600, y: 0 }],
@@ -20,6 +18,11 @@
     [{ x: 400, y: 50 }, { x: 400, y: 250 }],
     [{ x: 500, y: 50 }, { x: 500, y: 250 }],
   ];
+
+  // In production code, you might want to filter only unique vertices
+  const vertices = lineSegments.reduce((vertices, segment) => {
+    return [...vertices, ...segment];
+  }, []);
 
   function getMousePosition(event) {
     const rect = canvas.getBoundingClientRect();
@@ -51,15 +54,8 @@
     }, null);
   }
 
-  // Only for better ray visualization
-  // You can completely omit it in a production code as mentioned in the article
-  const dist = 1000;
-
-  function getAngleOffsetPoint(point, angle) {
-    return {
-      x: point.x + dist * Math.sin(Math.PI / 180 * angle),
-      y: point.y - dist * Math.cos(Math.PI / 180 * angle),
-    };
+  function sortIntersectionPointsByAngle(anchor, points) {
+    return points.sort((P1, P2) => Math.atan2(P1.y - anchor.y, P1.x - anchor.x) - Math.atan2(P2.y - anchor.y, P2.x - anchor.x));
   }
 
   function draw(mousePos) {
@@ -74,23 +70,34 @@
       ctx.stroke();
     });
 
-    for(let angle = 0; angle < 360; angle += angleOffset) {
-      const offsetPoint = getAngleOffsetPoint(mousePos, angle);
-
+    const intersectionPoints = [];
+    vertices.forEach(vertex => {
       ctx.strokeStyle = 'blue';
       ctx.beginPath();
       ctx.moveTo(mousePos.x, mousePos.y);
-      ctx.lineTo(offsetPoint.x, offsetPoint.y);
+      ctx.lineTo(vertex.x, vertex.y);
       ctx.stroke();
 
-      const closestPoint = getClosestIntersectionPoint([mousePos, offsetPoint], lineSegments);
+      const closestPoint = getClosestIntersectionPoint([mousePos, vertex], lineSegments);
       if(closestPoint !== null) {
+        intersectionPoints.push(closestPoint);
+
         ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.arc(closestPoint.x, closestPoint.y, 5, 0, 2 * Math.PI);
         ctx.fill();
       }
-    }
+    });
+
+    const sortedIntersectionPoints = sortIntersectionPointsByAngle(mousePos, intersectionPoints);
+    ctx.fillStyle = 'lightgrey';
+    ctx.beginPath();
+    ctx.moveTo(sortedIntersectionPoints[0].x, sortedIntersectionPoints[0].y);
+    sortedIntersectionPoints.slice(1).forEach(point => {
+      ctx.lineTo(point.x, point.y);
+    });
+    ctx.lineTo(sortedIntersectionPoints[0].x, sortedIntersectionPoints[0].y);
+    ctx.fill();
   }
 
   window.addEventListener('mousemove', event => {

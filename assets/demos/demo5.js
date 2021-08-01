@@ -1,7 +1,7 @@
 'use strict';
 
 {
-  const canvas = document.getElementById('demo3');
+  const canvas = document.getElementById('demo5');
   const ctx = canvas.getContext('2d');
 
   canvas.width = 600;
@@ -51,6 +51,10 @@
     }, null);
   }
 
+  function sortIntersectionPointsByAngle(anchor, points) {
+    return points.sort((P1, P2) => Math.atan2(P1.y - anchor.y, P1.x - anchor.x) - Math.atan2(P2.y - anchor.y, P2.x - anchor.x));
+  }
+
   // Only for better ray visualization
   // You can completely omit it in a production code as mentioned in the article
   const dist = 1000;
@@ -74,6 +78,7 @@
       ctx.stroke();
     });
 
+    const intersectionPoints = [];
     for(let angle = 0; angle < 360; angle += angleOffset) {
       const offsetPoint = getAngleOffsetPoint(mousePos, angle);
 
@@ -85,12 +90,24 @@
 
       const closestPoint = getClosestIntersectionPoint([mousePos, offsetPoint], lineSegments);
       if(closestPoint !== null) {
+        intersectionPoints.push(closestPoint);
+
         ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.arc(closestPoint.x, closestPoint.y, 5, 0, 2 * Math.PI);
         ctx.fill();
       }
     }
+
+    const sortedIntersectionPoints = sortIntersectionPointsByAngle(mousePos, intersectionPoints);
+    ctx.fillStyle = 'lightgrey';
+    ctx.beginPath();
+    ctx.moveTo(sortedIntersectionPoints[0].x, sortedIntersectionPoints[0].y);
+    sortedIntersectionPoints.slice(1).forEach(point => {
+      ctx.lineTo(point.x, point.y);
+    });
+    ctx.lineTo(sortedIntersectionPoints[0].x, sortedIntersectionPoints[0].y);
+    ctx.fill();
   }
 
   window.addEventListener('mousemove', event => {

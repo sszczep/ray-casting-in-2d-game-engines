@@ -23,6 +23,10 @@
     <script src="assets/demos/demo2.js" async></script>
     <script src="assets/demos/demo3.js" async></script>
     <script src="assets/demos/demo4.js" async></script>
+    <script src="assets/demos/demo5.js" async></script>
+    <script src="assets/demos/demo6.js" async></script>
+    <script src="assets/demos/demo7.js" async></script>
+    <script src="assets/demos/demo8.js" async></script>
 
     <title>Ray casting in 2D game engines</title>
   </head>
@@ -57,6 +61,11 @@
                 <nav class="nav nav-pills flex-column ms-3">
                   <a class="nav-link" href="#casting-rays-by-offset-angle">Casting rays by offset angle</a>
                   <a class="nav-link" href="#casting-rays-on-vertices">Casting rays on vertices</a>
+                </nav>
+                <a class="nav-link" href="#illuminating-visible-area">Illuminating the visible area</a>
+                <nav class="nav nav-pills flex-column ms-3">
+                  <a class="nav-link" href="#sorting-intersection-points">Sorting intersection points</a>
+                  <a class="nav-link" href="#casting-slightly-offseted-rays">Casting slightly offseted rays</a>
                 </nav>
               </nav>
             </nav>
@@ -279,6 +288,68 @@
             <canvas id="demo4" class="figure-img img-fluid"></canvas>
             <figcaption class="figure-caption">Demo 4 - casting rays on vertices</figcaption>
           </figure>
+
+          <h3 id="illuminating-visible-area">Illuminating the visible area</h3>
+          <p>
+            This is where the real fun begins. We will illuminate the visible area by filling a giant polygon. 
+          </p>
+
+          <h4 id="sorting-intersection-points">Sorting intersection points</h4>
+          <p>
+            To correctly order vertices to build a proper polygon, we need to sort them by angle first. We will use \(atan2(y, x)\) function for that. You can read more about it <a href="https://en.wikipedia.org/wiki/Atan2">here</a>.
+          </p>
+          <p>
+            Let's compare both ray casting methods:
+          </p>
+          <div class="row">
+            <figure class="figure my-3 mx-auto d-block text-center col-xxl-6">
+              <canvas id="demo5" class="figure-img img-fluid"></canvas>
+              <figcaption class="figure-caption">Demo 5 - casting rays by offset angle (filled visible area)</figcaption>
+            </figure>
+            <figure class="figure my-3 mx-auto d-block text-center col-xxl-6">
+              <canvas id="demo6" class="figure-img img-fluid"></canvas>
+              <figcaption class="figure-caption">Demo 6 - casting rays on vertices (filled visible area)</figcaption>
+            </figure>
+          </div>
+          <p>
+            Both of them looks glitchy, jumpy and inaccurate. Let's take a closer look why.
+          </p>
+
+          <h4 id="casting-slightly-offseted-rays">Casting slightly offseted rays</h4>
+          <p>
+            Notice what happens when rays are cast directly on vertices - they should go beyond that vertex but we are getting only the closest intersection point:
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <img src="assets/images/offseted-rays.png" class="figure-img img-fluid" alt="Rays on vertices problem">
+            <figcaption class="figure-caption">Rays on vertices problem</figcaption>
+          </figure>
+          <p>
+            The most common solution is casting two extra rays offseted by small angle (in both directions) for every cast ray. Consider ray \(AB\) starting at \(A = (A_x, A_y)\) going through \(B = (B_x, B_y)\). We want to find such point \(C = (C_x, C_y)\) that ray \(AC\) would be rotated by \(\phi\) with \(A\) being the origin point. \(C\) coordinates would be as follow:
+            \[
+              \begin{align}
+                C_x &= (B_x - A_x)cos(\phi) - (B_y - A_y)sin(\phi) + A_x \\
+                C_y &= (B_y - A_y)cos(\phi) + (B_x - A_x)sin(\phi) + A_y
+              \end{align}
+            \]
+            Note that we do not need to do it for the first method - simply add or substract the offset from the angle we are calculating from.<br>
+            For further explanation you can check <a href="https://academo.org/demos/rotation-about-point/">this</a> article.
+          </p>
+          <p>
+            Let's see how the illumination behaves after changes:
+          </p>
+          <div class="row">
+            <figure class="figure my-3 mx-auto d-block text-center col-xxl-6">
+              <canvas id="demo7" class="figure-img img-fluid"></canvas>
+              <figcaption class="figure-caption">Demo 7 - casting rays by offset angle (filled visible area with extra rays)</figcaption>
+            </figure>
+            <figure class="figure my-3 mx-auto d-block text-center col-xxl-6">
+              <canvas id="demo8" class="figure-img img-fluid"></canvas>
+              <figcaption class="figure-caption">Demo 8 - casting rays on vertices (filled visible area with extra rays)</figcaption>
+            </figure>
+          </div>
+          <p>
+            It did not help much for the first method. We could decrease angle offset (hence increase number of rays) but the result will still be poor. On the other hand, the second method looks very smooth and accurate. From now on, we will not be talking about the first method anymore.
+          </p>
         </div>
       </div>
     </div>
