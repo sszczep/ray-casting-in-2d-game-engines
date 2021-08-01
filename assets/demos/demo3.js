@@ -51,7 +51,10 @@
     }, null);
   }
 
+  // Only for better ray visualization
+  // You can completely omit it in a production code as mentioned in the article
   const dist = 1000;
+
   function getAngleOffsetPoint(point, angle) {
     return {
       x: point.x + dist * Math.sin(Math.PI / 180 * angle),

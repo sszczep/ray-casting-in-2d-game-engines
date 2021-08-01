@@ -69,8 +69,14 @@
 
     ctx.strokeStyle = 'blue';
     ctx.beginPath();
+    
+    // Extending line segment for better ray visualization
+    // Can be omitted in production code
+    const x = mousePos.x + (mousePos.x - rayAnchor.x) * 1000;
+    const y = mousePos.y + (mousePos.y - rayAnchor.y) * 1000;
+
     ctx.moveTo(rayAnchor.x, rayAnchor.y);
-    ctx.lineTo(mousePos.x, mousePos.y);
+    ctx.lineTo(x, y);
     ctx.stroke();
 
     ctx.fillStyle = 'grey';
