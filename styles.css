@@ -26,3 +26,8 @@ h4 {
 .MathJax.CtxtMenu_Attached_0 {
   overflow-y: scroll;
 }
+
+#navbar {
+  max-height: 100vh;
+  overflow-y: scroll;
+}
