@@ -48,10 +48,10 @@
                   <a class="nav-link" href="#object-visibility-and-light-casting">Object visibility and light casting</a>
                 </nav> 
               </nav>
-              <a class="nav-link" href="#ray-casting-in-top-view-2d-games">Ray casting in top view 2D games</a>
+              <a class="nav-link" href="#object-visibility-and-light-casting-in-2d-games">Object visibility and light casting in 2D games</a>
               <nav class="nav nav-pills flex-column ms-3">
                 <a class="nav-link" href="#formulating-the-problem">Formulating the problem</a>
-                <a class="nav-link" href="#calculating-line-segment-ray-intersection-point">Calculating line-segment - ray intersection point</a>
+                <a class="nav-link" href="#line-segment-ray-intersection-point">Line-segment - ray intersection point</a>
                 <nav class="nav nav-pills flex-column ms-3">
                   <a class="nav-link" href="#deriving-line-parametric-equation">Deriving line parametric equation</a>
                   <a class="nav-link" href="#calculating-intersection-point">Calculating the intersection point</a>
@@ -76,7 +76,7 @@
 
           <h3 id="the-purpose-of-this-article">The purpose of this article</h3>
           <p>
-            In my opinion, ray casting is a very interesting concept that it is not that hard to grasp, but the quality resources are very limited. I want to thoroughly go over it so you can understand the math behind it and easily implement it in your future projects. I will try to make it as comprehensible as possible, explain all the caveats and issues you may stumble upon. We will also talk about optimization and how can spatial hashmaps significantly help you. I will also provide some basic live examples for you to try out. Please note that demos were written to be as simple as possible, do not expect enterprise grade code - we only learn about the concept, not the implementation.
+            In my opinion, ray casting is a beautiful concept that is not that hard to grasp, but the quality resources are rare. We will learn the math behind it so you can implement it in your future projects with ease. I will try to make it as comprehensible as possible, explain all the caveats and issues you may stumble upon. We will also talk about optimization and how can spatial hash maps significantly help you. I will also provide some basic live examples for you to try out. Please note that demos were written to be as simple as possible, do not expect enterprise-grade code - we only learn about the concept, not the implementation.
           </p>
 
           <h3 id="what-is-ray-casting">What is ray casting?</h3>
@@ -92,14 +92,17 @@
             </figcaption>
           </figure>
           <p>
-            Well, it does not tell us much, does it? Let me simplify that: Ray casting is a basic and popular technique used to determine the visibility of certain objects (for instance polygons) by tracing rays from the eye (eg. player’s character) on every pixel (well, not quite in our case - more on that later) and finding the nearest intersections with objects.
+            Well, it does not tell us much, does it? Let me simplify that. Ray casting is a fundamental and popular technique used to determine the visibility of specific objects (polygons) by tracing rays from the eye (for instance, player’s hero) on every pixel (well, not quite in our case - more on that later) and finding the nearest intersections with objects.
           </p>
 
           <h3 id="where-ray-casting-might-be-used">Where ray casting might be used?</h3>
+          <p>
+            Ray casting has many uses, especially in three-dimensional space. I outlined three, in my opinion, the most important, which are commonly used in 2D game engines:
+          </p>
 
           <h4 id="creating-3d-perspective-in-2d-map">Creating 3D perspective in a 2D map</h4>
           <p>
-            The most well-known game that used this technique is Wolfenstein 3D. Rays were traced to determine the closest objects and their distance from the player position was used to appropriately scale them.
+            The most well-known game that used this technique is Wolfenstein 3D. Rays were traced to determine the closest objects, and their distance from the player position was used to appropriately scale them.
           </p>
           <figure class="figure my-3 mx-auto d-block text-center">
             <img src="assets/images/Simple_raycasting_with_fisheye_correction.gif" class="figure-img img-fluid" alt="Simple raycasting with fisheye correction">
@@ -108,7 +111,7 @@
 
           <h4 id="point-in-polygon-problem">Point-in-polygon problem</h4>
           <p>
-            PIP problem asks whether a given point lies inside, outside or on the boundary of a polygon. Using the Ray casting algorithm, we can count how many times the point intersects edges of the polygon. If the number of the intersections is even, the point is on the outside of the polygon. If the number of the intersections is odd, the point is on the inside or on the boundary of a polygon. 
+            PIP problem asks whether a given point lies inside, outside, or on the boundary of a polygon. Using the Ray casting algorithm, we can count how many times the point intersects the edges of the polygon. If the number of the intersections is even, the point is on the outside of the polygon. If the number of the intersections is odd, the point is on the inside or on the boundary of a polygon.
           </p>
           <figure class="figure my-3 mx-auto d-block text-center">
             <img src="assets/images/pip.png" class="figure-img img-fluid" alt="Point-in-polygon problem using ray casting">
@@ -117,10 +120,10 @@
 
           <h4 id="object-visibility-and-light-casting">Object visibility and light casting</h4>
           <p>
-            That is the problem we will specifically tackle in this article - determining which objects are visible by the player and illuminating the visible area. [screenshot of finished demo]
+            This is the problem we will specifically tackle in this article - determining which objects are visible by the player and illuminating the visible area. [screenshot of finished demo]
           </p>
 
-          <h2 id="ray-casting-in-top-view-2d-games">Ray casting in top view 2D games</h3>
+          <h2 id="object-visibility-and-light-casting-in-2d-games">Object visibility and light casting in 2D games</h3>
 
           <h3 id="formulating-the-problem">Formulating the problem</h3>
           <p>
@@ -131,7 +134,8 @@
             <figcaption class="figure-caption">Ray casting in top view 2D games - the problem</figcaption>
           </figure>
           
-          <h3 id="calculating-line-segment-ray-intersection-point">Calculating line-segment - ray intersection point</h3>
+          <h3 id="line-segment-ray-intersection-point">Line-segment - ray intersection point</h3>
+          <p>It is all about those intersection points. Let's learn step by step how to find them and how to use them. We will derive a line parametric equation first, calculate intersection points and finally learn how to determine which one of them is the closest efficiently.</p>
 
           <h4 id="deriving-line-parametric-equation">Deriving line parametric equation</h4>
           <p>
@@ -238,7 +242,7 @@
 
           <h4 id="finding-closest-intersection-point">Finding the closest intersection point</h4>
           <p>
-            We only need the closest intersection point to properly draw visible area. Naive solution would be to calculate distances between ray starting point and intersection points using <i>Pythagorean Theorem</i>: \(\sqrt{(C_x - P_x) ^ 2 + (C_y - P_y) ^ 2}\). Remember the line equation parameter though? I have already mentioned that we can use it as a scale factor. As we want to compare distances on ray, we can check for the smallest \(r\) parameter value.
+            We only need the closest intersection point to properly draw the visible area. The naive solution would be to calculate distances between the ray starting point and intersection points using the <i>Pythagorean Theorem</i>: \(\sqrt{(C_x - P_x) ^ 2 + (C_y - P_y) ^ 2}\). Remember the line equation parameter, though? I have already mentioned that we can use it as a scale factor. As we want to compare distances on ray, we can check for the smallest \(r\) parameter value.
             \[
               |\overrightarrow{CP_1}| < |\overrightarrow{CP_2}| \Leftrightarrow |r_1| < |r_2|
             \]
