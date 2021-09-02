@@ -27,6 +27,8 @@
     <script src="assets/demos/demo6.js" async></script>
     <script src="assets/demos/demo7.js" async></script>
     <script src="assets/demos/demo8.js" async></script>
+    <script src="assets/demos/demo9.js" async></script>
+    <script src="assets/demos/demo10.js" async></script>
 
     <title>Ray casting in 2D game engines</title>
   </head>
@@ -66,6 +68,7 @@
                 <nav class="nav nav-pills flex-column ms-3">
                   <a class="nav-link" href="#sorting-intersection-points">Sorting intersection points</a>
                   <a class="nav-link" href="#casting-slightly-offseted-rays">Casting slightly offseted rays</a>
+                  <a class="nav-link" href="#visibility-circle-and-flashlight">Visibility circle and flashlight</a>
                 </nav>
               </nav>
             </nav>
@@ -353,6 +356,24 @@
           </div>
           <p>
             It did not help much for the first method. We could decrease angle offset (hence increase number of rays) but the result will still be poor. On the other hand, the second method looks very smooth and accurate. From now on, we will not be talking about the first method anymore.
+          </p>
+
+          <h4 id="visibility-circle-and-flashlight">Visibility circle and flashlight</h4>
+          <p>
+            We may want to somehow limit player's visibility. We can achieve that by creating a clipping region of desired shape. In the below demos, I used a <i><a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip">CanvasRenderingContext2D.clip()</a></i> method. 
+          </p>
+          <div class="row">
+            <figure class="figure my-3 mx-auto d-block text-center col-xxl-6">
+              <canvas id="demo9" class="figure-img img-fluid"></canvas>
+              <figcaption class="figure-caption">Demo 9 - visibility circle</figcaption>
+            </figure>
+            <figure class="figure my-3 mx-auto d-block text-center col-xxl-6">
+              <canvas id="demo10" class="figure-img img-fluid"></canvas>
+              <figcaption class="figure-caption">Demo 10 - flashlight</figcaption>
+            </figure>
+          </div>
+          <p>
+            As you might have noticed, there is no optimization whatsoever - we are still calculating all the intersection points. We will get back to it once we learn about spatial hashmaps. 
           </p>
         </div>
       </div>
