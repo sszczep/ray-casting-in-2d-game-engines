@@ -117,7 +117,7 @@
             PIP problem asks whether a given point lies inside, outside, or on the boundary of a polygon. Using the Ray casting algorithm, we can count how many times the point intersects the edges of the polygon. If the number of the intersections is even, the point is on the outside of the polygon. If the number of the intersections is odd, the point is on the inside or on the boundary of a polygon.
           </p>
           <figure class="figure my-3 mx-auto d-block text-center">
-            <img src="assets/images/pip.png" class="figure-img img-fluid" alt="Point-in-polygon problem using ray casting">
+            <img src="assets/images/pip.jpg" class="figure-img img-fluid" alt="Point-in-polygon problem using ray casting">
             <figcaption class="figure-caption">Point-in-polygon problem using ray casting</figcaption>
           </figure>
 
@@ -133,7 +133,7 @@
             Given the set of line segments (eg. walls) find the visible area from a given point.
           </p>
           <figure class="figure my-3 mx-auto d-block text-center">
-            <img src="assets/images/problem.png" class="figure-img img-fluid" alt="Ray casting in top view 2D games - the problem">
+            <img src="assets/images/problem.jpg" class="figure-img img-fluid" alt="Ray casting in top view 2D games - the problem">
             <figcaption class="figure-caption">Ray casting in top view 2D games - the problem</figcaption>
           </figure>
           
@@ -145,7 +145,7 @@
             Let us talk about lines and their parametric equation first. 
           </p>
           <figure class="figure my-3 mx-auto d-block text-center">
-            <img src="assets/images/line.png" class="figure-img img-fluid" alt="Simple line example">
+            <img src="assets/images/line.jpg" class="figure-img img-fluid" alt="Simple line example">
             <figcaption class="figure-caption">Simple line example</figcaption>
           </figure>
           <p>
@@ -155,7 +155,7 @@
             Let me show you few examples:
           </p>
           <figure class="figure my-3 mx-auto d-block text-center">
-            <img src="assets/images/line-t.png" class="figure-img img-fluid" alt="Line parametric equation parameter example">
+            <img src="assets/images/line-t.jpg" class="figure-img img-fluid" alt="Line parametric equation parameter example">
             <figcaption class="figure-caption">Line parametric equation parameter example</figcaption>
           </figure>
           <p>
@@ -268,7 +268,7 @@
             Let \(P_1 = (x_1, y_1)\) be an anchor point of our rays, and let \(P_2 = (x_2, y_2)\) be a some point on a line going through \(P_1\) at angle \(\phi\):
           </p>
           <figure class="figure my-3 mx-auto d-block text-center">
-            <img src="assets/images/angle-offset.png" class="figure-img img-fluid" alt="Line from given point at some angle">
+            <img src="assets/images/angle-offset.jpg" class="figure-img img-fluid" alt="Line from given point at some angle">
             <figcaption class="figure-caption">Line from given point at some angle</figcaption>
           </figure>
           <p>
@@ -327,7 +327,7 @@
             Notice what happens when rays are cast directly on vertices - they should go beyond that vertex but we are getting only the closest intersection point:
           </p>
           <figure class="figure my-3 mx-auto d-block text-center">
-            <img src="assets/images/offseted-rays.png" class="figure-img img-fluid" alt="Rays on vertices problem">
+            <img src="assets/images/offseted-rays.jpg" class="figure-img img-fluid" alt="Rays on vertices problem">
             <figcaption class="figure-caption">Rays on vertices problem</figcaption>
           </figure>
           <p>
@@ -341,6 +341,10 @@
             Note that we do not need to do it for the first method - simply add or substract the offset from the angle we are calculating from.<br>
             For further explanation you can check <a href="https://academo.org/demos/rotation-about-point/">this</a> article.
           </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <img src="assets/images/offseted-rays-solve.jpg" class="figure-img img-fluid" alt="Rays on vertices problem - solve">
+            <figcaption class="figure-caption">Rays on vertices problem - solve</figcaption>
+          </figure>
           <p>
             Let's see how the illumination behaves after changes:
           </p>
@@ -360,7 +364,7 @@
 
           <h4 id="visibility-circle-and-flashlight">Visibility circle and flashlight</h4>
           <p>
-            We may want to somehow limit player's visibility. We can achieve that by creating a clipping region of desired shape. In the below demos, I used a <i><a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip">CanvasRenderingContext2D.clip()</a></i> method. 
+            We may want to somehow limit player's visibility. We can achieve that by creating a clipping region of desired shape. In the demos below, I used a <i><a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip">CanvasRenderingContext2D.clip()</a></i> method. 
           </p>
           <div class="row">
             <figure class="figure my-3 mx-auto d-block text-center col-xxl-6">
