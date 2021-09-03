@@ -70,9 +70,7 @@
   }
 
   function draw(mousePos) {
-    ctx.fillStyle = 'lightgrey';
-    ctx.lineWidth = 1;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     ctx.strokeStyle = 'black';
     lineSegments.forEach(segment => {
@@ -113,12 +111,15 @@
       });
     });
 
+    ctx.globalCompositeOperation = 'destination-over';
+
     ctx.save();
     ctx.beginPath();
     ctx.arc(mousePos.x, mousePos.y, visibilityRadius, 0, 2 * Math.PI);
     ctx.clip();
 
     const sortedIntersectionPoints = sortIntersectionPointsByAngle(mousePos, intersectionPoints);
+
     ctx.fillStyle = 'white';
     ctx.beginPath();
     ctx.moveTo(sortedIntersectionPoints[0].x, sortedIntersectionPoints[0].y);
@@ -129,6 +130,11 @@
     ctx.fill();
 
     ctx.restore();
+
+    ctx.fillStyle = 'lightgrey';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.globalCompositeOperation = 'source-over';
   }
 
   window.addEventListener('mousemove', event => {
