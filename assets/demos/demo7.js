@@ -73,7 +73,7 @@
   }
 
   function draw(mousePos) {
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = 'lightgrey';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.strokeStyle = 'black';
@@ -110,7 +110,7 @@
     }
 
     const sortedIntersectionPoints = sortIntersectionPointsByAngle(mousePos, intersectionPoints);
-    ctx.fillStyle = 'lightgrey';
+    ctx.fillStyle = 'white';
     ctx.beginPath();
     ctx.moveTo(sortedIntersectionPoints[0].x, sortedIntersectionPoints[0].y);
     sortedIntersectionPoints.slice(1).forEach(point => {
