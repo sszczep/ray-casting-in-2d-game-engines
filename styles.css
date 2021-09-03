@@ -34,3 +34,9 @@ h4 {
     padding-right: 15px;
   }
 }
+
+@media print {
+  #navbar {
+    display: none;
+  }
+}
