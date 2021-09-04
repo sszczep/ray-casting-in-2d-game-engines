@@ -93,12 +93,6 @@
           y: (vertex.y - mousePos.y) * angleOffsetCos + (vertex.x - mousePos.x) * angleOffsetSin + mousePos.y,
         },
       ].forEach(vertex => {
-        ctx.strokeStyle = 'blue';
-        ctx.beginPath();
-        ctx.moveTo(mousePos.x, mousePos.y);
-        ctx.lineTo(vertex.x, vertex.y);
-        ctx.stroke();
-
         const closestPoint = getClosestIntersectionPoint([mousePos, vertex], lineSegments);
         if(closestPoint !== null) {
           intersectionPoints.push(closestPoint);
@@ -107,7 +101,19 @@
           ctx.beginPath();
           ctx.arc(closestPoint.x, closestPoint.y, 5, 0, 2 * Math.PI);
           ctx.fill();
+
+          ctx.strokeStyle = 'red';
+          ctx.beginPath();
+          ctx.moveTo(mousePos.x, mousePos.y);
+          ctx.lineTo(closestPoint.x, closestPoint.y);
+          ctx.stroke();
         }
+
+        ctx.strokeStyle = 'blue';
+        ctx.beginPath();
+        ctx.moveTo(mousePos.x, mousePos.y);
+        ctx.lineTo(vertex.x, vertex.y);
+        ctx.stroke();
       });
     });
 
