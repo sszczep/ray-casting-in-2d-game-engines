@@ -24,7 +24,9 @@ h4 {
 }
 
 .MathJax.CtxtMenu_Attached_0 {
-  overflow-y: scroll;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  text-align: left !important;
 }
 
 @media (min-width: 992px) {

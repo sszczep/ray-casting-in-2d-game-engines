@@ -210,7 +210,7 @@
           </p>
           <div class="row">
             <div class="col-xxl-6">
-              <p class="text-center">
+              <p>
                 substitute \(s\) into the second equation:
                 \[
                   \begin{align}
@@ -225,7 +225,7 @@
               </p>
             </div>
             <div class="col-xxl-6">
-              <p class="text-center">
+              <p>
                 substitute \(r\) into the first equation:
                 \[
                   \begin{align}
@@ -250,10 +250,7 @@
 
           <h4 id="finding-closest-intersection-point">Finding the closest intersection point</h4>
           <p>
-            We only need the closest intersection point to properly draw the visible area. The naive solution would be to calculate distances between the ray starting point and intersection points using the <i>Pythagorean Theorem</i>: \(\sqrt{(C_x - P_x) ^ 2 + (C_y - P_y) ^ 2}\). Remember the line equation parameter, though? I have already mentioned that we can use it as a scale factor. As we want to compare distances on ray, we can check for the smallest \(r\) parameter value.
-            \[
-              |\overrightarrow{CP_1}| < |\overrightarrow{CP_2}| \Leftrightarrow |r_1| < |r_2|
-            \]
+            We only need the closest intersection point to properly draw the visible area. The naive solution would be to calculate distances between the ray starting point and intersection points using the <i>Pythagorean Theorem</i>: \(\sqrt{(C_x - P_x) ^ 2 + (C_y - P_y) ^ 2}\). Remember the line equation parameter, though? I have already mentioned that we can use it as a scale factor. As we want to compare distances on ray, we can check for the smallest \(r\) parameter value: \(|\overrightarrow{CP_1}| < |\overrightarrow{CP_2}| \Leftrightarrow |r_1| < |r_2|\)
           </p>
           <figure class="figure my-3 mx-auto d-block text-center">
             <canvas id="demo2" class="figure-img img-fluid"></canvas>
@@ -280,10 +277,10 @@
             We can define \(x_2\) as \(x_1 + dx\) and \(y_2\) as \(y_1 - dy\) (our y-axis is inverted hence why the minus sign).<br>
             Now we need to derive formulas for \(dx\) and \(dy\):
             \[
-              \begin{align}
+              \left\{\begin{align}
                 sin(\phi) &= \tfrac{dy}{\mathit{dist}} \Rightarrow dy = \mathit{dist} * sin(\phi) \\
                 cos(\phi) &= \tfrac{dx}{\mathit{dist}} \Rightarrow dx = \mathit{dist} * cos(\phi)
-              \end{align}
+              \end{align}\right.
             \]
             \(\mathit{dist}\) in our case has an arbitrary value (we are looking for any point on the line), so we are safe to assume \(\mathit{dist} = 1\) to simplify the calculations. Having it all considered, \(P_2 = (x_1 + sin(\phi), y_1 - cos(\phi))\), where \(\phi\) is our angle offset. 
           </p>
@@ -338,10 +335,10 @@
           <p>
             The most common solution is casting two extra rays offseted by small angle (in both directions) for every cast ray. Consider ray \(AB\) starting at \(A = (A_x, A_y)\) going through \(B = (B_x, B_y)\). We want to find such point \(C = (C_x, C_y)\) that ray \(AC\) would be rotated by \(\phi\) with \(A\) being the origin point. \(C\) coordinates would be as follow:
             \[
-              \begin{align}
+              \left\{\begin{align}
                 C_x &= (B_x - A_x)cos(\phi) - (B_y - A_y)sin(\phi) + A_x \\
                 C_y &= (B_y - A_y)cos(\phi) + (B_x - A_x)sin(\phi) + A_y
-              \end{align}
+              \end{align}\right.
             \]
             Note that we do not need to do it for the first method - simply add or substract the offset from the angle we are calculating from.<br>
             For further explanation you can check <a href="https://academo.org/demos/rotation-about-point/">this</a> article.
@@ -407,7 +404,7 @@
                 r ^ 2 &= P_x ^ 2 - 2P_xC_x + C_x ^ 2 + P_y ^ 2 - 2P_yC_y + C_y ^ 2 \\
                 r ^ 2 &= (t(B_x - A_x) + A_x) ^ 2 - 2(t(B_x - A_x) + A_x)C_x + C_x ^ 2 \\
                 &+ (t(B_y - A_y) + A_y) ^ 2 - 2(t(B_y - A_y) + A_y)C_y + C_y ^ 2 \\
-                r ^ 2 &= t ^ 2 (B_x - A_x) ^ 2 + 2t(B_x - A_x)A_x + A_x ^ 2 - 2t(B_x - A_x)C_x - 2A_xC_x + C_2 ^ 2 \\
+                r ^ 2 &= t ^ 2 (B_x - A_x) ^ 2 + 2t(B_x - A_x)A_x + A_x ^ 2 - 2t(B_x - A_x)C_x - 2A_xC_x + C_x ^ 2 \\
                 &+ t ^ 2 (B_y - A_y) ^ 2 + 2t(B_y - A_y)A_y + A_y ^ 2 - 2t(B_y - A_y)C_y - 2A_yC_y + C_y ^ 2 \\
                 0 &= t ^ 2 ((B_x - A_x) ^ 2 + (B_y - A_y) ^ 2) \\
                 &+ 2t((B_x - A_x)A_x - (B_x - A_x)C_x + (B_y - A_y)A_y - (B_y - A_y)C_y) \\
@@ -422,12 +419,12 @@
             Solve the quadratic equation:
 
             \[
-              \begin{align}
+              \left\{\begin{align}
                 a &= (B_x - A_x) ^ 2 + (B_y - A_y) ^ 2 \\
                 b &= 2((B_x - A_x)(A_x - C_x) + (B_y - A_y)(A_y - C_y)) \\
                 c &= (A_x - C_x) ^ 2 + (A_y - C_y) ^ 2 - r ^ 2 \\
                 \Delta &= b ^ 2 - 4ac
-              \end{align}
+              \end{align}\right.
             \]
 
             <ul>
