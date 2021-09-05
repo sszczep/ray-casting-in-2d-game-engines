@@ -36,6 +36,18 @@ h4 {
     overflow-y: scroll;
     padding-right: 15px;
   }
+
+  .nav-link {
+    padding: 0;
+    margin: .2rem 0;
+    font-size: .9rem;
+  }
+
+  .nav-link.active {
+    color: inherit !important;
+    background-color: inherit !important;
+    text-decoration: underline;
+  }
 }
 
 @media print {
