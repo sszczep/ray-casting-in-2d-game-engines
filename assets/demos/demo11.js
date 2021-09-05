@@ -96,7 +96,6 @@
 
     ctx.fillStyle = 'red';
     getIntersectionPoints([rayAnchor, mousePos], circles).forEach(point => {
-      console.log(point)
       ctx.beginPath();
       ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI);
       ctx.fill();
