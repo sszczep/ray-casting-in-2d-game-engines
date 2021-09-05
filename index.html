@@ -29,6 +29,7 @@
     <script src="assets/demos/demo8.js" async></script>
     <script src="assets/demos/demo9.js" async></script>
     <script src="assets/demos/demo10.js" async></script>
+    <script src="assets/demos/demo11.js" async></script>
 
     <title>Ray casting in 2D game engines</title>
   </head>
@@ -69,6 +70,10 @@
                   <a class="nav-link" href="#sorting-intersection-points">Sorting intersection points</a>
                   <a class="nav-link" href="#casting-slightly-offseted-rays">Casting slightly offseted rays</a>
                   <a class="nav-link" href="#visibility-circle-and-flashlight">Visibility circle and flashlight</a>
+                </nav>
+                <a class="nav-link" href="#what-about-circles">What about circles?</a>
+                <nav class="nav nav-pills flex-column ms-3">
+                  <a class="nav-link" href="#circle-ray-intersection-point">Circle - ray intersection point</a>
                 </nav>
               </nav>
             </nav>
@@ -379,6 +384,102 @@
           <p>
             As you might have noticed, there is no optimization whatsoever - we are still calculating all the intersection points. We will get back to it once we learn about spatial hashmaps. 
           </p>
+
+          <h3 id="what-about-circles">What about circles?</h3>
+          <p>
+            I have rarely seen a real use-case scenario for ray casting on circles. Please treat this section as an extra where I only briefly talk about it. I will provide you with equations and basic demos, the rest is up to you.
+          </p>
+
+          <h4 id="circle-ray-intersection-point">Circle - ray intersection point</h4>
+          <p>
+            \[
+              \left\{\begin{align}
+                P_x &= t(B_x - A_x) + A_x \\
+                P_y &= t(B_y - A_y) + A_y \\
+                r ^ 2 &= (P_x - C_x) ^ 2 + (P_y - C_y) ^ 2
+              \end{align}\right.
+            \]
+
+            Solve for \(t\):
+
+            \[
+              \begin{align}
+                r ^ 2 &= P_x ^ 2 - 2P_xC_x + C_x ^ 2 + P_y ^ 2 - 2P_yC_y + C_y ^ 2 \\
+                r ^ 2 &= (t(B_x - A_x) + A_x) ^ 2 - 2(t(B_x - A_x) + A_x)C_x + C_x ^ 2 \\
+                &+ (t(B_y - A_y) + A_y) ^ 2 - 2(t(B_y - A_y) + A_y)C_y + C_y ^ 2 \\
+                r ^ 2 &= t ^ 2 (B_x - A_x) ^ 2 + 2t(B_x - A_x)A_x + A_x ^ 2 - 2t(B_x - A_x)C_x - 2A_xC_x + C_2 ^ 2 \\
+                &+ t ^ 2 (B_y - A_y) ^ 2 + 2t(B_y - A_y)A_y + A_y ^ 2 - 2t(B_y - A_y)C_y - 2A_yC_y + C_y ^ 2 \\
+                0 &= t ^ 2 ((B_x - A_x) ^ 2 + (B_y - A_y) ^ 2) \\
+                &+ 2t((B_x - A_x)A_x - (B_x - A_x)C_x + (B_y - A_y)A_y - (B_y - A_y)C_y) \\
+                &+ A_x ^ 2 - 2A_xC_x + C_x ^ 2 + A_y ^ 2 - 2A_yC_y + C_y ^ 2 - r ^ 2 \\
+                0 &= t ^ 2 ((B_x - A_x) ^ 2 + (B_y - A_y) ^ 2) \\
+                &+ 2t((B_x - A_x)(A_x - C_x) + (B_y - A_y)(A_y - C_y)) \\
+                &+ (A_x - C_x) ^ 2 + (A_y - C_y) ^ 2 - r ^ 2
+
+              \end{align}
+            \]
+
+            Solve the quadratic equation:
+
+            \[
+              \begin{align}
+                a &= (B_x - A_x) ^ 2 + (B_y - A_y) ^ 2 \\
+                b &= 2((B_x - A_x)(A_x - C_x) + (B_y - A_y)(A_y - C_y)) \\
+                c &= (A_x - C_x) ^ 2 + (A_y - C_y) ^ 2 - r ^ 2 \\
+                \Delta &= b ^ 2 - 4ac
+              \end{align}
+            \]
+
+            <ul>
+              <li>\(\Delta < 0\): ray does not intersect the circle,</li>
+              <li>\(\Delta = 0 \): ray intersects the circle in one point (tangent),</li>
+              <li>\(\Delta > 0 \): ray intersects the circle in two points.</li>
+            </ul>
+          </p>
+          <div class="row">
+            <p class="col-md-6">
+              Only if \(\Delta = 0\):
+
+              \[
+                \begin{align}
+                  t = \tfrac{-b}{2a}
+                \end{align}
+              \]
+
+              Only if \(t \geq 0\):
+
+              \[
+                \left\{\begin{align}
+                  P_x &= t(B_x - A_x) + A_x \\
+                  P_x &= t(B_y - A_y) + A_y
+                \end{align}\right.
+              \]
+            </p>
+            <p class="col-md-6">
+              Only if \(\Delta > 0\):
+
+              \[
+                \left\{\begin{align}
+                  t_1 &= \tfrac{-b -\sqrt{\Delta}}{2a} \\
+                  t_2 &= \tfrac{-b +\sqrt{\Delta}}{2a} \\
+                \end{align}\right.
+              \]
+
+              Only if \(t_i \geq 0\):
+
+              \[
+                \left\{\begin{align}
+                  P_{i_x} &= t_i(B_x - A_x) + A_x \\
+                  P_{i_y} &= t_i(B_y - A_y) + A_y
+                \end{align}\right.
+              \]
+            </p>
+          </div>
+
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <canvas id="demo11" class="figure-img img-fluid"></canvas>
+            <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo11.js">Demo 11</a> - circle - ray instersection</figcaption>
+          </figure>
         </div>
       </div>
     </div>
