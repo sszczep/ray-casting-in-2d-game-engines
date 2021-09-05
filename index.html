@@ -42,7 +42,6 @@
             <nav class="nav nav-pills flex-column">
               <a class="nav-link" href="#introduction">Introduction</a>
               <nav class="nav nav-pills flex-column ms-3">
-                <a class="nav-link" href="#the-purpose-of-this-article">The purpose of this article</a>
                 <a class="nav-link" href="#what-is-ray-casting">What is ray casting?</a>
                 <a class="nav-link" href="#where-ray-casting-might-be-used">Where ray casting might be used?</a>
                 <nav class="nav nav-pills flex-column ms-3">
@@ -53,7 +52,6 @@
               </nav>
               <a class="nav-link" href="#object-visibility-and-light-casting-in-2d-games">Object visibility and light casting in 2D games</a>
               <nav class="nav nav-pills flex-column ms-3">
-                <a class="nav-link" href="#formulating-the-problem">Formulating the problem</a>
                 <a class="nav-link" href="#line-segment-ray-intersection-point">Line-segment - ray intersection point</a>
                 <nav class="nav nav-pills flex-column ms-3">
                   <a class="nav-link" href="#deriving-line-parametric-equation">Deriving line parametric equation</a>
@@ -81,8 +79,6 @@
         </div>
         <div class="col">
           <h2 id="introduction">Introduction</h2>
-
-          <h3 id="the-purpose-of-this-article">The purpose of this article</h3>
           <p>
             In my opinion, ray casting is a beautiful concept that is not that hard to grasp, but the quality resources are rare. We will learn the math behind it so you can implement it in your future projects with ease. I will try to make it as comprehensible as possible, explain all the caveats and issues you may stumble upon. We will also talk about optimization and how can spatial hash maps significantly help you. I will also provide some basic live examples for you to try out. Please note that demos were written to be as simple as possible, do not expect enterprise-grade code - we only learn about the concept, not the implementation.
           </p>
@@ -128,19 +124,17 @@
 
           <h4 id="object-visibility-and-light-casting">Object visibility and light casting</h4>
           <p>
-            This is the problem we will specifically tackle in this article - determining which objects are visible by the player and illuminating the visible area. [screenshot of finished demo]
-          </p>
-
-          <h2 id="object-visibility-and-light-casting-in-2d-games">Object visibility and light casting in 2D games</h3>
-
-          <h3 id="formulating-the-problem">Formulating the problem</h3>
-          <p>
-            Given the set of line segments (eg. walls) find the visible area from a given point.
+            This is the problem we will specifically tackle in this article - determining which objects are visible by the player and illuminating the visible area.
           </p>
           <figure class="figure my-3 mx-auto d-block text-center">
-            <img src="assets/images/problem.jpg" class="figure-img img-fluid" alt="Ray casting in top view 2D games - the problem">
-            <figcaption class="figure-caption">Ray casting in top view 2D games - the problem</figcaption>
+            <img src="assets/images/light-casting.jpg" class="figure-img img-fluid" alt="Object visibility and light casting">
+            <figcaption class="figure-caption">Object visibility and light casting</figcaption>
           </figure>
+
+          <h2 id="object-visibility-and-light-casting-in-2d-games">Object visibility and light casting in 2D games</h3>
+          <p>
+            In this section we will go through basics such as calculating intersection points, casting rays, sorting intersection points to illuminate visible area and few words about circles. I will provide interactive demos at each stage so you do not get lost and see the results immediately.
+          </p>
           
           <h3 id="line-segment-ray-intersection-point">Line-segment - ray intersection point</h3>
           <p>It is all about those intersection points. Let's learn step by step how to find them and how to use them. We will derive a line parametric equation first, calculate intersection points and finally learn how to determine which one of them is the closest efficiently.</p>
