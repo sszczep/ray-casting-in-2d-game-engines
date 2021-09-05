@@ -27,6 +27,7 @@ h4 {
   overflow-x: scroll;
   overflow-y: hidden;
   text-align: left !important;
+  font-size: 1rem !important;
 }
 
 @media (min-width: 992px) {

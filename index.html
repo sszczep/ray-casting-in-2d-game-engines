@@ -37,7 +37,7 @@
     <div class="container">
       <h1 class="text-center">Ray casting in 2D game engines</h1>
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-3 d-none d-lg-block">
           <nav id="navbar" class="navbar flex-column align-items-stretch sticky-top">
             <nav class="nav nav-pills flex-column">
               <a class="nav-link" href="#introduction">Introduction</a>
@@ -250,7 +250,7 @@
 
           <h4 id="finding-closest-intersection-point">Finding the closest intersection point</h4>
           <p>
-            We only need the closest intersection point to properly draw the visible area. The naive solution would be to calculate distances between the ray starting point and intersection points using the <i>Pythagorean Theorem</i>: \(\sqrt{(C_x - P_x) ^ 2 + (C_y - P_y) ^ 2}\). Remember the line equation parameter, though? I have already mentioned that we can use it as a scale factor. As we want to compare distances on ray, we can check for the smallest \(r\) parameter value: \(|\overrightarrow{CP_1}| < |\overrightarrow{CP_2}| \Leftrightarrow |r_1| < |r_2|\)
+            We only need the closest intersection point to properly draw the visible area. The naive solution would be to calculate distances between the ray starting point and intersection points using the <i>Pythagorean Theorem</i>: \(\sqrt{(C_x - P_x) ^ 2 + (C_y - P_y) ^ 2}\). Remember the line equation parameter, though? I have already mentioned that we can use it as a scale factor. As we want to compare distances on ray, we can check for the smallest \(r\) parameter value: \(|\overrightarrow{CP_1}| < |\overrightarrow{CP_2}| \Leftrightarrow |r_1| < |r_2|\).
           </p>
           <figure class="figure my-3 mx-auto d-block text-center">
             <canvas id="demo2" class="figure-img img-fluid"></canvas>
@@ -434,7 +434,7 @@
             </ul>
           </p>
           <div class="row">
-            <p class="col-md-6">
+            <p class="col-sm-6">
               Only if \(\Delta = 0\):
 
               \[
@@ -452,7 +452,7 @@
                 \end{align}\right.
               \]
             </p>
-            <p class="col-md-6">
+            <p class="col-sm-6">
               Only if \(\Delta > 0\):
 
               \[
