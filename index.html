@@ -277,7 +277,7 @@
                 cos(\phi) &= \tfrac{dx}{\mathit{dist}} \Rightarrow dx = \mathit{dist} * cos(\phi)
               \end{align}\right.
             \]
-            \(\mathit{dist}\) in our case has an arbitrary value (we are looking for any point on the line), so we are safe to assume \(\mathit{dist} = 1\) to simplify the calculations. Having it all considered, \(P_2 = (x_1 + sin(\phi), y_1 - cos(\phi))\), where \(\phi\) is our angle offset. 
+            \(\mathit{dist}\) in our case has an arbitrary (greater than 0) value (we are looking for any point on the line), so we are safe to assume \(\mathit{dist} = 1\) to simplify the calculations. Having it all considered, \(P_2 = (x_1 + sin(\phi), y_1 - cos(\phi))\), where \(\phi\) is our angle offset. 
           </p>
           <figure class="figure my-3 mx-auto d-block text-center">
             <canvas id="demo3" class="figure-img img-fluid"></canvas>
