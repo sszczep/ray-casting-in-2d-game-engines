@@ -30,6 +30,7 @@
     <script src="assets/demos/demo9.js" async></script>
     <script src="assets/demos/demo10.js" async></script>
     <script src="assets/demos/demo11.js" async></script>
+    <script src="assets/demos/demo12.js" async></script>
 
     <title>Ray casting in 2D game engines</title>
   </head>
@@ -205,7 +206,7 @@
           <div class="row">
             <div class="col-xxl-6">
               <p>
-                substitute \(s\) into the second equation:
+                Substitute \(s\) into the second equation:
                 \[
                   \begin{align}
                     &\tfrac{r(D_x - C_x) + (C_x - A_x)}{B_x - A_x} (B_y - A_y) + A_y = r(D_y - C_y) + C_y \\[10pt]
@@ -220,7 +221,7 @@
             </div>
             <div class="col-xxl-6">
               <p>
-                substitute \(r\) into the first equation:
+                Substitute \(r\) into the first equation:
                 \[
                   \begin{align}
                     &s(B_x - A_x) + A_x = \tfrac{s(B_y - A_y) + (A_y - C_y)}{D_y - C_y} (D_x - C_x) + C_x \\[10pt]
@@ -383,6 +384,7 @@
 
           <h4 id="circle-ray-intersection-point">Circle - ray intersection point</h4>
           <p>
+            Let \(P\) be an intersection point, \(A\) a ray's anchor point, \(B\) a point on the ray, \(C\) a circle's center point and \(r\) a circle's radius.
             \[
               \left\{\begin{align}
                 P_x &= t(B_x - A_x) + A_x \\
@@ -442,7 +444,7 @@
               \[
                 \left\{\begin{align}
                   P_x &= t(B_x - A_x) + A_x \\
-                  P_x &= t(B_y - A_y) + A_y
+                  P_y &= t(B_y - A_y) + A_y
                 \end{align}\right.
               \]
             </p>
@@ -471,6 +473,114 @@
             <canvas id="demo11" class="figure-img img-fluid"></canvas>
             <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo11.js">Demo 11</a> - circle - ray instersection</figcaption>
           </figure>
+
+          <h4 id="casting-rays-on-circles">Casting rays on circles</h4>
+          <p>
+            We need to find two tangent lines to a given circle passing through a ray anchor point. <br>
+            Let \(P_i\) be tangent points, \(A\) a ray's anchor point, \(C\) a circle's center point and \(r\) a circle's radius. <br>
+            We will also be moving all points using translation vector \(\overrightarrow{v} = (-C_x, -C_y)\): \(X^\prime = X + \overrightarrow{v}\), so the circle's center is at \((0,0)\). <br>
+
+            <br>
+
+            From the circle equation:
+            \[
+              P_x ^ {\prime ^ 2} + P_y ^ {\prime ^ 2} = r ^ 2
+            \]
+
+            From the perpendicular line to the circle's radius:
+
+            \[
+              \begin{align}
+                & \tfrac{P_y ^ \prime}{P_x ^ \prime} = - \tfrac{1}{\tfrac{P_y ^ \prime - A_y ^ \prime}{P_x ^ \prime - A_x ^ \prime}} \\
+                & \tfrac{P_y ^ \prime}{P_x ^ \prime} = - \tfrac{P_x ^ \prime - A_x ^ \prime}{P_y ^ \prime - A_y ^ \prime} \\
+                & - P_y ^ {\prime ^ 2} + P_y ^ \prime A_y ^ \prime = P_x ^ {\prime ^ 2} - P_x ^ \prime A_x ^ \prime \\
+                & P_x ^ {\prime ^ 2} + P_y ^ {\prime ^ 2} = P_x ^ \prime A_x ^ \prime + P_y ^ \prime A_y ^ \prime
+              \end{align}
+            \]
+            
+            Solve the equation system:
+
+            \[
+              \left\{\begin{align}
+                & P_x ^ {\prime ^ 2} + P_y ^ {\prime ^ 2} = r ^ 2 \\
+                & P_x ^ {\prime ^ 2} + P_y ^ {\prime ^ 2} = P_x ^ \prime A_x ^ \prime + P_y ^ \prime A_y ^ \prime
+              \end{align}\right.
+            \]
+
+            \[
+              \begin{align}
+                & r ^ 2 = P_x ^ \prime A_x ^ \prime + P_y ^ \prime A_y ^ \prime \\
+                & P_x ^ \prime = \tfrac{r ^ 2 - P_y ^ \prime A_y ^ \prime }{A_x ^ \prime}
+              \end{align}
+            \]
+
+            Substitute \(P_x ^ \prime\) into the first equation:
+
+            \[
+              \begin{align}
+                & (\tfrac{r ^ 2 - P_y ^ \prime A_y ^ \prime }{A_x ^ \prime}) ^ 2 + P_y ^ {\prime ^ 2} = r ^ 2 \\
+                & \tfrac{r ^ 4 - 2 r ^ 2 P_y ^ \prime A_y ^ \prime + (P_y ^ \prime A_y ^ \prime) ^ 2}{A_x ^{\prime ^ 2}} + P_y ^ {\prime ^ 2} = r ^ 2 \\
+                & r ^ 4 - 2 r ^ 2 P_y ^ \prime A_y ^ \prime + (P_y ^ \prime A_y ^ \prime) ^ 2 + P_y ^ {\prime ^ 2} A_x ^{\prime ^ 2} = r ^ 2 A_x ^{\prime ^ 2} \\
+                & P_y ^ {\prime ^ 2} (A_x ^{\prime ^ 2} + A_y ^{\prime ^ 2}) - P_y ^ \prime 2r ^ 2 A_y ^ \prime + r ^ 4 - r ^ 2 A_x ^ {\prime ^ 2} = 0
+              \end{align}
+            \]
+
+            Solve the quadratic equation:
+
+            \[
+              \left\{\begin{align}
+                a &= A_x ^{\prime ^ 2} + A_y ^{\prime ^ 2} \\
+                b &= - 2r ^ 2 A_y ^ \prime \\
+                c &= r ^ 4 - r ^ 2 A_x ^ {\prime ^ 2} \\
+                \Delta &= b ^ 2 - 4ac
+              \end{align}\right.
+            \]
+
+            <ul>
+              <li>\(\Delta < 0\): there are no tangent points (ray's anchor point is in the circle),</li>
+              <li>\(\Delta = 0 \): there is only one tangent point (ray's anchor point),</li>
+              <li>\(\Delta > 0 \): there are two tangent points.</li>
+            </ul>
+          </p>
+          <div class="row">
+            <p class="col-sm-6">
+              Only if \(\Delta = 0\):
+
+              \[
+                \left\{\begin{align}
+                  P_y ^ \prime &= \tfrac{-b}{2a} \\
+                  P_x ^ \prime &= \tfrac{r ^ 2 - P_y ^ \prime A_y ^ \prime }{A_x ^ \prime}
+                \end{align}\right.
+              \]
+
+              \[
+                \begin{align}
+                  P = (P_x ^ \prime + C_x, P_y ^ \prime + C_y)
+                \end{align}
+              \]
+            </p>
+            <p class="col-sm-6">
+              Only if \(\Delta > 0\):
+
+              \[
+                \left\{\begin{align}
+                  P_{1_y} ^ \prime &= \tfrac{-b -\sqrt{\Delta}}{2a} \\
+                  P_{2_y} ^ \prime &= \tfrac{-b +\sqrt{\Delta}}{2a} \\
+                  P_{i_x} ^ \prime &= \tfrac{r ^ 2 - P_{i_y} ^ \prime A_y ^ \prime }{A_x ^ \prime}
+                \end{align}\right.
+              \]
+
+              \[
+                \begin{align}
+                  P_i = (P_{i_x} ^ \prime + C_x, P_{i_y} ^ \prime + C_y)
+                \end{align}
+              \]
+            </p>
+            <figure class="figure my-3 mx-auto d-block text-center">
+              <canvas id="demo12" class="figure-img img-fluid"></canvas>
+              <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo12.js">Demo 12</a> - casting rays on circles</figcaption>
+            </figure>
+          </div>
         </div>
       </div>
     </div>

@@ -44,7 +44,7 @@
 
         result.push({ x, y });
       }
-    } else {
+    } else if(discriminant > 0) {
       const discriminantSqrt = Math.sqrt(discriminant);
       const t1 = (-b + discriminantSqrt) / (2 * a);
       const t2 = (-b - discriminantSqrt) / (2 * a);
