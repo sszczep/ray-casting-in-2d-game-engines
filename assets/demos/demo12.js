@@ -25,27 +25,71 @@
     const A = { x: rayAnchor.x - circle.x, y: rayAnchor.y - circle.y };
     const r = circle.radius;
 
-    const a = A.x ** 2 + A.y ** 2;
-    const b = -2 * r ** 2 * A.y;
-    const c = r ** 4 - r ** 2 * A.x ** 2;
-    const discriminant = b ** 2 - 4 * a * c;
-
     const result = [];
 
-    if(discriminant === 0) {
-      const y = -b / 2 * A;
-      const x = (r ** 2 - y * A.y) / A.x;
+    if(A.x !== 0 && A.y !== 0) {
+      const a = A.x ** 2 + A.y ** 2;
+      const b = -2 * r ** 2 * A.y;
+      const c = r ** 4 - r ** 2 * A.x ** 2;
+      const discriminant = b ** 2 - 4 * a * c;
 
-      result.push({ x: x + circle.x, y: y + circle.y });
-    } else if(discriminant > 0) {
-      const discriminantSqrt = Math.sqrt(discriminant);
-      const y1 = (-b + discriminantSqrt) / (2 * a);
-      const y2 = (-b - discriminantSqrt) / (2 * a);
-      const x1 = (r ** 2 - y1 * A.y) / A.x;
-      const x2 = (r ** 2 - y2 * A.y) / A.x;
+      if(discriminant === 0) {
+        const y = -b / 2 * A;
+        const x = (r ** 2 - y * A.y) / A.x;
 
-      result.push({ x: x1 + circle.x, y: y1 + circle.y });
-      result.push({ x: x2 + circle.x, y: y2 + circle.y });
+        result.push({ x: x + circle.x, y: y + circle.y });
+      } else if(discriminant > 0) {
+        const discriminantSqrt = Math.sqrt(discriminant);
+        const y1 = (-b + discriminantSqrt) / (2 * a);
+        const y2 = (-b - discriminantSqrt) / (2 * a);
+        const x1 = (r ** 2 - y1 * A.y) / A.x;
+        const x2 = (r ** 2 - y2 * A.y) / A.x;
+
+        result.push({ x: x1 + circle.x, y: y1 + circle.y });
+        result.push({ x: x2 + circle.x, y: y2 + circle.y });
+      }
+    } else if(A.x === 0 && A.y !== 0) {
+      const a = A.y ** 2;
+      const b = 0;
+      const c = r ** 4 - r ** 2 * A.y ** 2;
+      const discriminant = b ** 2 - 4 * a * c;
+
+      if(discriminant === 0) {
+        const x = -b / 2 * A;
+        const y = r ** 2 / A.y;
+
+        result.push({ x: x + circle.x, y: y + circle.y });
+      } else if(discriminant > 0) {
+        const discriminantSqrt = Math.sqrt(discriminant);
+        const x1 = (-b + discriminantSqrt) / (2 * a);
+        const x2 = (-b - discriminantSqrt) / (2 * a);
+        const y1 = r ** 2 / A.y;
+        const y2 = r ** 2 / A.y;
+
+        result.push({ x: x1 + circle.x, y: y1 + circle.y });
+        result.push({ x: x2 + circle.x, y: y2 + circle.y });
+      }
+    } else if(A.x !== 0 && A.y === 0) {
+      const a = A.x ** 2;
+      const b = 0;
+      const c = r ** 4 - r ** 2 * A.x ** 2;
+      const discriminant = b ** 2 - 4 * a * c;
+
+      if(discriminant === 0) {
+        const y = -b / 2 * A;
+        const x = r ** 2 / A.x;
+
+        result.push({ x: x + circle.x, y: y + circle.y });
+      } else if(discriminant > 0) {
+        const discriminantSqrt = Math.sqrt(discriminant);
+        const y1 = (-b + discriminantSqrt) / (2 * a);
+        const y2 = (-b - discriminantSqrt) / (2 * a);
+        const x1 = r ** 2 / A.x;
+        const x2 = r ** 2 / A.x;
+
+        result.push({ x: x1 + circle.x, y: y1 + circle.y });
+        result.push({ x: x2 + circle.x, y: y2 + circle.y });
+      }
     }
 
     return result;

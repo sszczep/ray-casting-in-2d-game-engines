@@ -510,7 +510,7 @@
             \[
               \begin{align}
                 & r ^ 2 = P_x ^ \prime A_x ^ \prime + P_y ^ \prime A_y ^ \prime \\
-                & P_x ^ \prime = \tfrac{r ^ 2 - P_y ^ \prime A_y ^ \prime }{A_x ^ \prime}
+                & P_x ^ \prime = \tfrac{r ^ 2 - P_y ^ \prime A_y ^ \prime }{A_x ^ \prime} \text{, where } A_x ^ \prime \neq 0
               \end{align}
             \]
 
@@ -554,9 +554,10 @@
               \]
 
               \[
-                \begin{align}
-                  P = (P_x ^ \prime + C_x, P_y ^ \prime + C_y)
-                \end{align}
+                \left\{\begin{align}
+                  P_x &= P_x ^ \prime + C_x \\
+                  P_y &= P_y ^ \prime + C_y
+                \end{align}\right.
               \]
             </p>
             <p class="col-sm-6">
@@ -571,16 +572,109 @@
               \]
 
               \[
-                \begin{align}
-                  P_i = (P_{i_x} ^ \prime + C_x, P_{i_y} ^ \prime + C_y)
-                \end{align}
+                \left\{\begin{align}
+                  P_{i_x} &= P_{i_x} ^ \prime + C_x \\
+                  P_{i_y} &= P_{i_y} ^ \prime + C_y
+                \end{align}\right.
               \]
             </p>
-            <figure class="figure my-3 mx-auto d-block text-center">
-              <canvas id="demo12" class="figure-img img-fluid"></canvas>
-              <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo12.js">Demo 12</a> - casting rays on circles</figcaption>
-            </figure>
           </div>
+          <p>
+            There is still one issue - it will not work if \(A_x ^ \prime = 0\). <br>
+            Take a closer look at the following equation: \(r ^ 2 = P_x ^ \prime A_x ^ \prime + P_y ^ \prime A_y ^ \prime\). <br>
+            If \(A_x ^ \prime = 0\), the equation becomes: \(r ^ 2 = P_y ^ \prime A_y ^ \prime\) - we cannot substitute \(P_x ^ \prime\) anymore. <br>
+            Here are the steps for solving the equation system once that happens:
+          </p>
+          <p>
+            Solve the equation system:
+
+            \[
+              \left\{\begin{align}
+                & P_x ^ {\prime ^ 2} + P_y ^ {\prime ^ 2} = r ^ 2 \\
+                & P_x ^ {\prime ^ 2} + P_y ^ {\prime ^ 2} = P_x ^ \prime A_x ^ \prime + P_y ^ \prime A_y ^ \prime \\
+                & A_x ^ \prime = 0
+              \end{align}\right.
+            \]
+
+            \[
+              \begin{align}
+                & r ^ 2 = P_y ^ \prime A_y ^ \prime \\
+                & P_y ^ \prime = \tfrac{r ^ 2}{A_y ^ \prime} \text{, where } A_y ^ \prime \neq 0
+              \end{align}
+            \]
+
+            Substitute \(P_y ^ \prime\) into the first equation:
+
+            \[
+              \begin{align}
+                & P_x ^ {\prime ^ 2} + (\tfrac{r ^ 2}{A_y ^ \prime}) ^ 2 = r ^ 2 \\
+                & P_x ^ {\prime ^ 2} + \tfrac{r ^ 4}{A_y ^ {\prime ^ 2}} = r ^ 2 \\
+                & P_x ^ {\prime ^ 2} A_y ^ {\prime ^ 2} + r ^ 4 = r ^ 2 A_y ^ {\prime ^ 2} \\
+                & P_x ^ {\prime ^ 2} A_y ^ {\prime ^ 2} + r ^ 4 - r ^ 2 A_y ^ {\prime ^ 2} = 0
+              \end{align}
+            \]
+
+            Solve the quadratic equation:
+
+            \[
+              \left\{\begin{align}
+                a &= A_y ^ {\prime ^ 2} \\
+                b &= 0 \\
+                c &= r ^ 4 - r ^ 2 A_y ^ {\prime ^ 2} \\
+                \Delta &= b ^ 2 - 4ac
+              \end{align}\right.
+            \]
+
+            <ul>
+              <li>\(\Delta < 0\): there are no tangent points (ray's anchor point is in the circle),</li>
+              <li>\(\Delta = 0 \): there is only one tangent point (ray's anchor point),</li>
+              <li>\(\Delta > 0 \): there are two tangent points.</li>
+            </ul>
+          </p>
+          <div class="row">
+            <p class="col-sm">
+              Only if \(\Delta = 0\):
+
+              \[
+                \left\{\begin{align}
+                  P_x ^ \prime &= \tfrac{-b}{2a} \\
+                  P_y ^ \prime &= \tfrac{r ^ 2}{A_y ^ \prime}
+                \end{align}\right.
+              \]
+
+              \[
+                \left\{\begin{align}
+                  P_x &= P_x ^ \prime + C_x \\
+                  P_y &= P_y ^ \prime + C_y
+                \end{align}\right.
+              \]
+            </p>
+            <p class="col-sm">
+              Only if \(\Delta > 0\):
+
+              \[
+                \left\{\begin{align}
+                  P_{1_x} ^ \prime &= \tfrac{-b -\sqrt{\Delta}}{2a} \\
+                  P_{2_x} ^ \prime &= \tfrac{-b +\sqrt{\Delta}}{2a} \\
+                  P_{i_y} ^ \prime &= \tfrac{r ^ 2}{A_y ^ \prime}
+                \end{align}\right.
+              \]
+
+              \[
+                \left\{\begin{align}
+                  P_{i_x} &= P_{i_x} ^ \prime + C_x \\
+                  P_{i_y} &= P_{i_y} ^ \prime + C_y
+                \end{align}\right.
+              \]
+            </p>
+          </div>
+          <p>
+            Note that we can do the same for \(A_y ^ \prime = 0\). If \(A_x ^ \prime = A_y ^ \prime = 0\), there are no solutions.
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <canvas id="demo12" class="figure-img img-fluid"></canvas>
+            <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo12.js">Demo 12</a> - casting rays on circles</figcaption>
+          </figure>
         </div>
       </div>
     </div>
