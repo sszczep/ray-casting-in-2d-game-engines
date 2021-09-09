@@ -117,7 +117,7 @@
 
           <h4 id="point-in-polygon-problem">Point-in-polygon problem</h4>
           <p>
-            PIP problem asks whether a given point lies inside, outside, or on the boundary of a polygon. Using the Ray casting algorithm, we can count how many times the point intersects the edges of the polygon. If the number of the intersections is even, the point is on the outside of the polygon. If the number of the intersections is odd, the point is on the inside or on the boundary of a polygon.
+            PIP problem asks whether a given point lies inside, outside, or on the boundary of a polygon. Using the ray casting algorithm, we can count how many times the point intersects the edges of the polygon. If the number of the intersections is even, the point is on the outside of the polygon. If the number of the intersections is odd, the point is on the inside or on the boundary of a polygon.
           </p>
           <figure class="figure my-3 mx-auto d-block text-center">
             <img src="assets/images/pip.jpg" class="figure-img img-fluid" alt="Point-in-polygon problem using ray casting">
@@ -165,12 +165,12 @@
           </p>
           <p>
             Now we can easily see, that if we want the point to be contained on:
-            <ul>
-              <li>line: \(t \in \mathbb{R}\),</li>
-              <li>ray: \(t \geq 0\),</li>
-              <li>line-segment: \(0 \leq t \leq 1\).</li>
-            </ul>
           </p>
+          <ul>
+            <li>line: \(t \in \mathbb{R}\),</li>
+            <li>ray: \(t \geq 0\),</li>
+            <li>line-segment: \(0 \leq t \leq 1\).</li>
+          </ul>
           <p>
             Having all of that sorted out, we can finally derive the parametric equation:<br>
             \[
@@ -423,15 +423,14 @@
                 \Delta &= b ^ 2 - 4ac
               \end{align}\right.
             \]
-
-            <ul>
-              <li>\(\Delta < 0\): ray does not intersect the circle,</li>
-              <li>\(\Delta = 0 \): ray intersects the circle in one point (tangent),</li>
-              <li>\(\Delta > 0 \): ray intersects the circle in two points.</li>
-            </ul>
           </p>
+          <ul>
+            <li>\(\Delta < 0\): ray does not intersect the circle,</li>
+            <li>\(\Delta = 0 \): ray intersects the circle in one point (tangent),</li>
+            <li>\(\Delta > 0 \): ray intersects the circle in two points.</li>
+          </ul>
           <div class="row">
-            <p class="col-sm-auto">
+            <p class="col-sm-auto me-3">
               Only if \(\Delta = 0\):
 
               \[
@@ -536,15 +535,14 @@
                 \Delta &= b ^ 2 - 4ac
               \end{align}\right.
             \]
-
-            <ul>
-              <li>\(\Delta < 0\): there are no tangent points (ray's anchor point is in the circle),</li>
-              <li>\(\Delta = 0 \): there is only one tangent point (ray's anchor point),</li>
-              <li>\(\Delta > 0 \): there are two tangent points.</li>
-            </ul>
           </p>
+          <ul>
+            <li>\(\Delta < 0\): there are no tangent points (ray's anchor point is in the circle),</li>
+            <li>\(\Delta = 0 \): there is only one tangent point (ray's anchor point),</li>
+            <li>\(\Delta > 0 \): there are two tangent points.</li>
+          </ul>
           <div class="row">
-            <p class="col-sm-auto">
+            <p class="col-sm-auto me-3">
               Only if \(\Delta = 0\):
 
               \[
@@ -625,15 +623,14 @@
                 \Delta &= b ^ 2 - 4ac
               \end{align}\right.
             \]
-
-            <ul>
-              <li>\(\Delta < 0\): there are no tangent points (ray's anchor point is in the circle),</li>
-              <li>\(\Delta = 0 \): there is only one tangent point (ray's anchor point),</li>
-              <li>\(\Delta > 0 \): there are two tangent points.</li>
-            </ul>
           </p>
+          <ul>
+            <li>\(\Delta < 0\): there are no tangent points (ray's anchor point is in the circle),</li>
+            <li>\(\Delta = 0 \): there is only one tangent point (ray's anchor point),</li>
+            <li>\(\Delta > 0 \): there are two tangent points.</li>
+          </ul>
           <div class="row">
-            <p class="col-sm-auto">
+            <p class="col-sm-auto me-3">
               Only if \(\Delta = 0\):
 
               \[
