@@ -49,36 +49,49 @@
     return segments.map(segment => getIntersectionPoint(ray, segment)).filter(point => point !== null);
   }
 
-  function draw(mousePos) {
+  function clearCanvas() {
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
 
+  function drawSegments(segments) {
     ctx.strokeStyle = 'black';
-    lineSegments.forEach(segment => {
+    segments.forEach(segment => {
       ctx.beginPath();
       ctx.moveTo(segment[0].x, segment[0].y);
       ctx.lineTo(segment[1].x, segment[1].y);
       ctx.stroke();
     });
+  }
 
+  function drawRay(ray) {
     ctx.strokeStyle = 'blue';
     ctx.beginPath();
     
     // Extending line segment for better ray visualization
     // Can be omitted in production code
-    const x = mousePos.x + (mousePos.x - rayAnchor.x) * 1000;
-    const y = mousePos.y + (mousePos.y - rayAnchor.y) * 1000;
+    const x = ray[1].x + (ray[1].x - ray[0].x) * 1000;
+    const y = ray[1].y + (ray[1].y - ray[0].y) * 1000;
 
-    ctx.moveTo(rayAnchor.x, rayAnchor.y);
+    ctx.moveTo(ray[0].x, ray[0].y);
     ctx.lineTo(x, y);
     ctx.stroke();
+  }
 
+  function drawIntersectionPoints(ray) {
     ctx.fillStyle = 'red';
-    getIntersectionPoints([rayAnchor, mousePos], lineSegments).forEach(point => {
+    getIntersectionPoints(ray, lineSegments).forEach(point => {
       ctx.beginPath();
       ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI);
       ctx.fill();
     });
+  }
+ 
+  function draw(mousePos) {
+    clearCanvas();
+    drawSegments(lineSegments);
+    drawRay([rayAnchor, mousePos]);
+    drawIntersectionPoints([rayAnchor, mousePos]);
   }
 
   window.addEventListener('mousemove', event => {

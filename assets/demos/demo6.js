@@ -63,40 +63,40 @@
     return points.sort((P1, P2) => Math.atan2(P1.y - anchor.y, P1.x - anchor.x) - Math.atan2(P2.y - anchor.y, P2.x - anchor.x));
   }
 
-  function draw(mousePos) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  function clearCanvas() {
+    ctx.fillStyle = 'lightgrey';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
 
+  function drawSegments(segments) {
     ctx.strokeStyle = 'black';
-    lineSegments.forEach(segment => {
+    segments.forEach(segment => {
       ctx.beginPath();
       ctx.moveTo(segment[0].x, segment[0].y);
       ctx.lineTo(segment[1].x, segment[1].y);
       ctx.stroke();
     });
+  }
 
-    const intersectionPoints = [];
-    vertices.forEach(vertex => {
-      ctx.strokeStyle = 'blue';
+  function drawRay(ray) {
+    ctx.strokeStyle = 'blue';
+    ctx.beginPath();
+
+    ctx.moveTo(ray[0].x, ray[0].y);
+    ctx.lineTo(ray[1].x, ray[1].y);
+    ctx.stroke();
+  }
+
+  function drawClosestIntersectionPoint(closestPoint) {
+    if(closestPoint !== null) {
+      ctx.fillStyle = 'red';
       ctx.beginPath();
-      ctx.moveTo(mousePos.x, mousePos.y);
-      ctx.lineTo(vertex.x, vertex.y);
-      ctx.stroke();
+      ctx.arc(closestPoint.x, closestPoint.y, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+  }
 
-      const closestPoint = getClosestIntersectionPoint([mousePos, vertex], lineSegments);
-      if(closestPoint !== null) {
-        intersectionPoints.push(closestPoint);
-
-        ctx.fillStyle = 'red';
-        ctx.beginPath();
-        ctx.arc(closestPoint.x, closestPoint.y, 5, 0, 2 * Math.PI);
-        ctx.fill();
-      }
-    });
-
-    const sortedIntersectionPoints = sortIntersectionPointsByAngle(mousePos, intersectionPoints);
-
-    ctx.globalCompositeOperation = 'destination-over';
-
+  function drawVisibleArea(sortedIntersectionPoints) {
     ctx.fillStyle = 'white';
     ctx.beginPath();
     ctx.moveTo(sortedIntersectionPoints[0].x, sortedIntersectionPoints[0].y);
@@ -105,11 +105,25 @@
     });
     ctx.lineTo(sortedIntersectionPoints[0].x, sortedIntersectionPoints[0].y);
     ctx.fill();
+  }
 
-    ctx.fillStyle = 'lightgrey';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  function draw(mousePos) {
+    clearCanvas();
 
-    ctx.globalCompositeOperation = 'source-over';
+    const intersectionPoints = [];
+    vertices.forEach(vertex => {
+      const closestPoint = getClosestIntersectionPoint([mousePos, vertex], lineSegments);
+      if(closestPoint !== null) intersectionPoints.push(closestPoint);
+    });
+
+    const sortedIntersectionPoints = sortIntersectionPointsByAngle(mousePos, intersectionPoints);
+
+    drawVisibleArea(sortedIntersectionPoints);
+    drawSegments(lineSegments);
+    intersectionPoints.forEach(intersectionPoint => {
+      drawRay([mousePos, intersectionPoint]);
+      drawClosestIntersectionPoint(intersectionPoint);
+    });
   }
 
   window.addEventListener('mousemove', event => {

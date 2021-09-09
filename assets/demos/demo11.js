@@ -35,7 +35,7 @@
 
     const result = [];
     
-    if(discriminant == 0) {
+    if(discriminant === 0) {
       const t = -b / (2 * a);
 
       if(t >= 0) {
@@ -68,38 +68,51 @@
   }
 
   function getIntersectionPoints(ray, circles) {
-    return circles.map(circle => getIntersectionPoint(ray, circle)).flat(); // Probably needs a polyfill
+    return circles.flatMap(circle => getIntersectionPoint(ray, circle));
   }
 
-  function draw(mousePos) {
+  function clearCanvas() {
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
 
+  function drawCircles(circles) {
     ctx.strokeStyle = 'black';
     circles.forEach(circle => {
       ctx.beginPath();
       ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
       ctx.stroke();
     });
+  }
 
+  function drawRay(ray) {
     ctx.strokeStyle = 'blue';
     ctx.beginPath();
-    
+
     // Extending line segment for better ray visualization
     // Can be omitted in production code
-    const x = mousePos.x + (mousePos.x - rayAnchor.x) * 1000;
-    const y = mousePos.y + (mousePos.y - rayAnchor.y) * 1000;
+    const x = ray[1].x + (ray[1].x - ray[0].x) * 1000;
+    const y = ray[1].y + (ray[1].y - ray[0].y) * 1000;
 
-    ctx.moveTo(rayAnchor.x, rayAnchor.y);
+    ctx.moveTo(ray[0].x, ray[0].y);
     ctx.lineTo(x, y);
     ctx.stroke();
+  }
 
+  function drawIntersectionPoints(ray, circles) {
     ctx.fillStyle = 'red';
-    getIntersectionPoints([rayAnchor, mousePos], circles).forEach(point => {
+    getIntersectionPoints(ray, circles).forEach(point => {
       ctx.beginPath();
       ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI);
       ctx.fill();
     });
+  }
+
+  function draw(mousePos) {
+    clearCanvas();
+    drawCircles(circles);
+    drawRay([rayAnchor, mousePos]);
+    drawIntersectionPoints([rayAnchor, mousePos], circles);
   }
 
   window.addEventListener('mousemove', event => {

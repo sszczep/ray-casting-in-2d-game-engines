@@ -59,32 +59,47 @@
     }, null);
   }
 
-  function draw(mousePos) {
+  function clearCanvas() {
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
 
+  function drawSegments(segments) {
     ctx.strokeStyle = 'black';
-    lineSegments.forEach(segment => {
+    segments.forEach(segment => {
       ctx.beginPath();
       ctx.moveTo(segment[0].x, segment[0].y);
       ctx.lineTo(segment[1].x, segment[1].y);
       ctx.stroke();
     });
+  }
+
+  function drawRay(ray) {
+    ctx.strokeStyle = 'blue';
+    ctx.beginPath();
+
+    ctx.moveTo(ray[0].x, ray[0].y);
+    ctx.lineTo(ray[1].x, ray[1].y);
+    ctx.stroke();
+  }
+
+  function drawClosestIntersectionPoint(ray) {
+    const closestPoint = getClosestIntersectionPoint(ray, lineSegments);
+    if(closestPoint !== null) {
+      ctx.fillStyle = 'red';
+      ctx.beginPath();
+      ctx.arc(closestPoint.x, closestPoint.y, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+  }
+
+  function draw(mousePos) {
+    clearCanvas();
+    drawSegments(lineSegments);
 
     vertices.forEach(vertex => {
-      ctx.strokeStyle = 'blue';
-      ctx.beginPath();
-      ctx.moveTo(mousePos.x, mousePos.y);
-      ctx.lineTo(vertex.x, vertex.y);
-      ctx.stroke();
-
-      const closestPoint = getClosestIntersectionPoint([mousePos, vertex], lineSegments);
-      if(closestPoint !== null) {
-        ctx.fillStyle = 'red';
-        ctx.beginPath();
-        ctx.arc(closestPoint.x, closestPoint.y, 5, 0, 2 * Math.PI);
-        ctx.fill();
-      }
+      drawRay([mousePos, vertex]);
+      drawClosestIntersectionPoint([mousePos, vertex]);
     });
   }
 

@@ -96,32 +96,42 @@
   }
 
   function getAllTangents(rayAnchor, circles) {
-    return circles.map(circle => getTangents(rayAnchor, circle)).flat(); // Probably needs a polyfill
+    return circles.flatMap(circle => getTangents(rayAnchor, circle));
   }
 
-  function draw(mousePos) {
+  function clearCanvas() {
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
 
+  function drawCircles(circles) {
     ctx.strokeStyle = 'black';
     circles.forEach(circle => {
       ctx.beginPath();
       ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
       ctx.stroke();
     });
+  }
 
+  function drawTangentsAndPoints(anchorPoint, circles) {
     ctx.fillStyle = 'red';
     ctx.strokeStyle = 'blue';
-    getAllTangents(mousePos, circles).forEach(point => {
+    getAllTangents(anchorPoint, circles).forEach(point => {
       ctx.beginPath();
       ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI);
       ctx.fill();
 
       ctx.beginPath();
-      ctx.moveTo(mousePos.x, mousePos.y);
+      ctx.moveTo(anchorPoint.x, anchorPoint.y);
       ctx.lineTo(point.x, point.y);
       ctx.stroke();
     });
+  }
+
+  function draw(mousePos) {
+    clearCanvas();
+    drawCircles(circles);
+    drawTangentsAndPoints(mousePos, circles);
   }
 
   window.addEventListener('mousemove', event => {
