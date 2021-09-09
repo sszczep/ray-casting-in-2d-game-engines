@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"></script>
+
+    <!-- Custom imports -->
+    <style>
+      .card {
+        padding: 10px;
+      }
+
+      .MathJax.CtxtMenu_Attached_0 {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        text-align: left !important;
+      }
+    </style>
+
+    <title>Ray casting in 2D game engines - cheatsheet</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <h1 class="text-center mt-5 mb-0 display-5">Ray casting in 2D game engines</h1>
+      <h1 class="text-center mt-0 mb-5 display-6 text-muted">ultimate cheatsheet</h1>
+
+      <div class="row g-1" data-masonry='{"percentPosition": true }'>
+        <div class="col-md-6 col-xl-4">
+          <div class="card">
+            <h4>Point-in-polygon problem</h4>
+            <p>
+              PIP problem asks whether a given point lies inside, outside, or on the boundary of a polygon. Using the ray casting algorithm, we can count how many times the point intersects the edges of the polygon. If the number of the intersections is even, the point is on the outside of the polygon. If the number of the intersections is odd, the point is on the inside or on the boundary of a polygon.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+          <div class="card">
+            <h4>Line-segment - ray intersection point</h4>
+            <p>
+              Assume that point \(P\) is the intersection point of line-segment defined by points \(A\) and \(B\), and ray defined by points \(C\) and \(D\). Point \(P\) is then expressed by set of two equations:
+              \[
+                \left\{\begin{align}
+                  P &= s(B - A) + A\text {, where } 0 \leq s \leq 1 \text{, and} \\
+                  P &= r(D - C) + C\text {, where } r \geq 0 \text{.}
+                \end{align}\right.
+              \]
+
+              \[
+                r = \tfrac{(B_x - A_x)(C_y - A_y) - (C_x - A_x)(B_y - A_y)}{(D_x - C_x)(B_y - A_y) - (B_x - A_x)(D_y - C_y)}
+              \]
+
+              \[
+                s = \tfrac{(A_x - C_x)(D_y - C_y) - (D_x - C_x)(A_y - C_y)}{(D_x - C_x)(B_y - A_y) - (B_x - A_x)(D_y - C_y)}
+              \]
+
+              Having \(s\) and \(r\) calculated, we can calculate \(P\) using one of the equations from the set.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+          <div class="card">
+            <h4>Illuminating the visible area</h4>
+            <ol>
+              <li>Cast rays on all vertices</li>
+              <li>For every cast ray, cast two additional rays offseted by small angle</li>
+              <li>Sort intersection points</li>
+              <li>Draw a visibility polygon by connecting sorted intersection points</li>
+            </ol>
+            <h5>Casting slighly offsetted rays</h5>
+            <p>
+              Consider ray \(AB\) starting at \(A = (A_x, A_y)\) going through \(B = (B_x, B_y)\). We want to find such point \(C = (C_x, C_y)\) that ray \(AC\) would be rotated by \(\phi\) with \(A\) being the origin point. \(C\) coordinates would be as follow:
+              \[
+                \left\{\begin{align}
+                  C_x &= (B_x - A_x)cos(\phi) - (B_y - A_y)sin(\phi) + A_x \\
+                  C_y &= (B_y - A_y)cos(\phi) + (B_x - A_x)sin(\phi) + A_y
+                \end{align}\right.
+              \]
+            </p>
+            <h5>Sorting intersection points</h3>
+            <p>
+              \[
+                P_1 > P_2 \leftrightarrow atan2(P_{1_y} - A_y, P_{1_x} - A_x) > (P_{2_y} - A_y, P_{2_x} - A_x)
+              \]
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+          <div class="card">
+            <h4>Circle - ray intersection point</h4>
+            <p>
+              Let \(P\) be an intersection point, \(A\) a ray's anchor point, \(B\) a point on the ray, \(C\) a circle's center point and \(r\) a circle's radius.
+
+              \[
+                \left\{\begin{align}
+                  a &= (B_x - A_x) ^ 2 + (B_y - A_y) ^ 2 \\
+                  b &= 2((B_x - A_x)(A_x - C_x) + (B_y - A_y)(A_y - C_y)) \\
+                  c &= (A_x - C_x) ^ 2 + (A_y - C_y) ^ 2 - r ^ 2 \\
+                  \Delta &= b ^ 2 - 4ac
+                \end{align}\right.
+              \]
+            </p>
+            <ul>
+              <li>\(\Delta < 0\): ray does not intersect the circle,</li>
+              <li>\(\Delta = 0 \): ray intersects the circle in one point (tangent),</li>
+              <li>\(\Delta > 0 \): ray intersects the circle in two points.</li>
+            </ul>
+            <div class="row">
+              <p class="col-sm-auto me-3">
+                Only if \(\Delta = 0\):
+
+                \[
+                  \begin{align}
+                    t = \tfrac{-b}{2a}
+                  \end{align}
+                \]
+
+                Only if \(t \geq 0\):
+
+                \[
+                  \left\{\begin{align}
+                    P_x &= t(B_x - A_x) + A_x \\
+                    P_y &= t(B_y - A_y) + A_y
+                  \end{align}\right.
+                \]
+              </p>
+              <p class="col-sm-auto">
+                Only if \(\Delta > 0\):
+
+                \[
+                  \left\{\begin{align}
+                    t_1 &= \tfrac{-b -\sqrt{\Delta}}{2a} \\
+                    t_2 &= \tfrac{-b +\sqrt{\Delta}}{2a} \\
+                  \end{align}\right.
+                \]
+
+                Only if \(t_i \geq 0\):
+
+                \[
+                  \left\{\begin{align}
+                    P_{i_x} &= t_i(B_x - A_x) + A_x \\
+                    P_{i_y} &= t_i(B_y - A_y) + A_y
+                  \end{align}\right.
+                \]
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="card">
+            <h4>Casting rays on circles</h4>
+            <p>
+              Let \(P_i\) be tangent points, \(A\) a ray's anchor point, \(C\) a circle's center point and \(r\) a circle's radius. <br>
+              We will also be moving all points using translation vector \(\overrightarrow{v} = (-C_x, -C_y)\): \(X^\prime = X + \overrightarrow{v}\), so the circle's center is at \((0,0)\). <br>
+              <br>
+              Applies to all cases below:
+            </p>
+            <ul>
+              <li>\(\Delta < 0\): there are no tangent points (ray's anchor point is in the circle),</li>
+              <li>\(\Delta = 0 \): there is only one tangent point (ray's anchor point),</li>
+              <li>\(\Delta > 0 \): there are two tangent points.</li>
+            </ul>
+            <div class="row mt-3">
+              <div class="col-md-6 col-lg-3">
+                <p>
+                  Case #1 (\(A_x ^ \prime \neq 0 \land A_y ^ \prime \neq 0\)): <br>
+                  \[
+                    \left\{\begin{align}
+                      a &= A_x ^{\prime ^ 2} + A_y ^{\prime ^ 2} \\
+                      b &= - 2r ^ 2 A_y ^ \prime \\
+                      c &= r ^ 4 - r ^ 2 A_x ^ {\prime ^ 2} \\
+                      \Delta &= b ^ 2 - 4ac
+                    \end{align}\right.
+                  \]
+                </p>
+                <div class="row">
+                  <p class="col-sm-auto me-3">
+                    Only if \(\Delta = 0\):
+      
+                    \[
+                      \left\{\begin{align}
+                        P_y ^ \prime &= \tfrac{-b}{2a} \\
+                        P_x ^ \prime &= \tfrac{r ^ 2 - P_y ^ \prime A_y ^ \prime }{A_x ^ \prime}
+                      \end{align}\right.
+                    \]
+      
+                    \[
+                      \left\{\begin{align}
+                        P_x &= P_x ^ \prime + C_x \\
+                        P_y &= P_y ^ \prime + C_y
+                      \end{align}\right.
+                    \]
+                  </p>
+                  <p class="col-sm-auto">
+                    Only if \(\Delta > 0\):
+      
+                    \[
+                      \left\{\begin{align}
+                        P_{1_y} ^ \prime &= \tfrac{-b -\sqrt{\Delta}}{2a} \\
+                        P_{2_y} ^ \prime &= \tfrac{-b +\sqrt{\Delta}}{2a} \\
+                        P_{i_x} ^ \prime &= \tfrac{r ^ 2 - P_{i_y} ^ \prime A_y ^ \prime }{A_x ^ \prime}
+                      \end{align}\right.
+                    \]
+      
+                    \[
+                      \left\{\begin{align}
+                        P_{i_x} &= P_{i_x} ^ \prime + C_x \\
+                        P_{i_y} &= P_{i_y} ^ \prime + C_y
+                      \end{align}\right.
+                    \]
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3">
+                <p>
+                  Case #2 (\(A_x ^ \prime = 0 \land A_y ^ \prime \neq 0\)): <br>
+                  \[
+                    \left\{\begin{align}
+                      a &= A_y ^ {\prime ^ 2} \\
+                      b &= 0 \\
+                      c &= r ^ 4 - r ^ 2 A_y ^ {\prime ^ 2} \\
+                      \Delta &= b ^ 2 - 4ac
+                    \end{align}\right.
+                  \]
+                </p>
+                <div class="row">
+                  <p class="col-sm-auto me-3">
+                    Only if \(\Delta = 0\):
+      
+                    \[
+                      \left\{\begin{align}
+                        P_x ^ \prime &= \tfrac{-b}{2a} \\
+                        P_y ^ \prime &= \tfrac{r ^ 2}{A_y ^ \prime}
+                      \end{align}\right.
+                    \]
+      
+                    \[
+                      \left\{\begin{align}
+                        P_x &= P_x ^ \prime + C_x \\
+                        P_y &= P_y ^ \prime + C_y
+                      \end{align}\right.
+                    \]
+                  </p>
+                  <p class="col-sm-auto">
+                    Only if \(\Delta > 0\):
+      
+                    \[
+                      \left\{\begin{align}
+                        P_{1_x} ^ \prime &= \tfrac{-b -\sqrt{\Delta}}{2a} \\
+                        P_{2_x} ^ \prime &= \tfrac{-b +\sqrt{\Delta}}{2a} \\
+                        P_{i_y} ^ \prime &= \tfrac{r ^ 2}{A_y ^ \prime}
+                      \end{align}\right.
+                    \]
+      
+                    \[
+                      \left\{\begin{align}
+                        P_{i_x} &= P_{i_x} ^ \prime + C_x \\
+                        P_{i_y} &= P_{i_y} ^ \prime + C_y
+                      \end{align}\right.
+                    \]
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3">
+                <p>
+                  Case #3 (\(A_x ^ \prime \neq 0 \land A_y ^ \prime = 0\)): <br>
+                  \[
+                    \left\{\begin{align}
+                      a &= A_x ^ {\prime ^ 2} \\
+                      b &= 0 \\
+                      c &= r ^ 4 - r ^ 2 A_x ^ {\prime ^ 2} \\
+                      \Delta &= b ^ 2 - 4ac
+                    \end{align}\right.
+                  \]
+                </p>
+                <div class="row">
+                  <p class="col-sm-auto me-3">
+                    Only if \(\Delta = 0\):
+      
+                    \[
+                      \left\{\begin{align}
+                        P_y ^ \prime &= \tfrac{-b}{2a} \\
+                        P_x ^ \prime &= \tfrac{r ^ 2}{A_x ^ \prime}
+                      \end{align}\right.
+                    \]
+      
+                    \[
+                      \left\{\begin{align}
+                        P_x &= P_x ^ \prime + C_x \\
+                        P_y &= P_y ^ \prime + C_y
+                      \end{align}\right.
+                    \]
+                  </p>
+                  <p class="col-sm-auto">
+                    Only if \(\Delta > 0\):
+      
+                    \[
+                      \left\{\begin{align}
+                        P_{1_y} ^ \prime &= \tfrac{-b -\sqrt{\Delta}}{2a} \\
+                        P_{2_y} ^ \prime &= \tfrac{-b +\sqrt{\Delta}}{2a} \\
+                        P_{i_x} ^ \prime &= \tfrac{r ^ 2}{A_x ^ \prime}
+                      \end{align}\right.
+                    \]
+      
+                    \[
+                      \left\{\begin{align}
+                        P_{i_x} &= P_{i_x} ^ \prime + C_x \\
+                        P_{i_y} &= P_{i_y} ^ \prime + C_y
+                      \end{align}\right.
+                    \]
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3">
+                <p>
+                  Case #4 (\(A_x ^ \prime = A_y ^ \prime = 0\)): <br>
+                  <br>
+                  No tangent points (\(A = C\)).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
