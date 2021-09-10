@@ -686,15 +686,18 @@
           <h3 id="spatial-hashmaps">Spatial hashmaps</h3>
           <p>
             Currently, we are drawing all polygons and calculating all intersection points, but it is pretty much useless. In most cases, our play area will be much bigger than viewport. By using spatial hashmaps, we can quickly determine which polygons are visible to the player and perform adequate calculations. <br>
+            <br>
             Basically, we want to divide play area into smaller cells (of predefined size). Each cell will consist of a list containing our shapes (most likely line-segments). If a single shape spans across multiple cells, it will be included in all of them. <br>
+            <br>
             The name of this technique suggests using hashmaps (eg. cell's would be named something like X+":"+Y), but in our case, using a simple 2D array might be more desired. <br>
+            <br>
             Here is a simple demo showing how it might work:
           </p>
           <figure class="figure my-3 mx-auto d-block text-center">
             <canvas id="demo13" class="figure-img img-fluid"></canvas>
             <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo13.js">Demo 13</a> - spatial hashmaps</figcaption>
           </figure>
-          <span>We can use it for implementing viewports as mentioned previously, and also visibility circles and flashlights.
+          <p>We can use it for implementing viewports as mentioned previously, and also visibility circles and flashlights.</p>
 
           <h3 id="bresenham-based-supercover-line-algorithm">Bresenham-based supercover line algorithm</h3>
         </div>
