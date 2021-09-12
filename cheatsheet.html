@@ -172,6 +172,26 @@
             </div>
           </div>
         </div>
+        <div class="col-md-6 col-xl-4">
+          <div class="card">
+            <h4>Spatial hashmaps</h4>
+            <p>
+              Using spatial hashmaps allows to divide play area into smaller cells (of predefined size). Each cell consists of a list containing our shapes (most likely line-segments). If a single shape spans across multiple cells, it will be included in all of them. <br>
+              <br>
+              We can use them for things such as implementing viewports, visibility circles and flashlights.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+          <div class="card">
+            <h4>Bresenham-based supercover line algorithm</h4>
+            <p>
+              Using spatial hashmaps and modified Bresenham's line algorithm, we can traverse the grid in an efficient manner making as few checks as required. The algorithm should stop when the first cell with intersection point is found. <br>
+              <br>
+              You can read more about Bresenham's line algorithm <a href="https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm">here</a>, and its modified version <a href="https://playtechs.blogspot.com/2007/03/raytracing-on-grid.html">here</a>.
+            </p>
+          </div>
+        </div>
         <div class="col-12">
           <div class="card">
             <h4>Casting rays on circles</h4>
