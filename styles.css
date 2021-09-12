@@ -24,7 +24,7 @@ h4 {
 }
 
 .MathJax.CtxtMenu_Attached_0 {
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
   text-align: left !important;
 }
@@ -32,7 +32,7 @@ h4 {
 @media (min-width: 992px) {
   #navbar {
     max-height: 100vh;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding-right: 15px;
   }
 
