@@ -143,7 +143,7 @@
 
           <h2 id="object-visibility-and-light-casting-in-2d-games">Object visibility and light casting in 2D games</h3>
           <p>
-            In this section we will go through basics such as calculating intersection points, casting rays, sorting intersection points to illuminate visible area and few words about circles. I will provide interactive demos at each stage so you do not get lost and see the results immediately.
+            In this section we will go through basics such as calculating intersection points, casting rays, sorting intersection points to illuminate the visible area, and few words about circles. I will provide interactive demos at each stage so you do not get lost and see the results immediately.
           </p>
           
           <h3 id="line-segment-ray-intersection-point">Line-segment - ray intersection point</h3>
@@ -295,7 +295,7 @@
 
           <h4 id="casting-rays-on-vertices">Casting rays on vertices</h4>
           <p>
-            Casting rays on vertices is most likely your go-to solution. Instead of casting rays in all directions, we can simply cast them on our polygons' vertices. Depending on the number of vertices, we can save computing power on not casting useless rays. Throughout next sections you will see how does it impact animation smoothness and also learn how to further optimize the whole process.
+            Casting rays on vertices is most likely your go-to solution. Instead of casting rays in all directions, we can simply cast them on our polygons' vertices. Depending on the number of vertices, we can save computing power by not casting useless rays. In the next sections you will see how does it impact animation smoothness and also learn how to further optimize the whole process.
           </p>
           <figure class="figure my-3 mx-auto d-block text-center">
             <canvas id="demo4" class="figure-img img-fluid"></canvas>
@@ -685,16 +685,16 @@
 
           <h2 id="few-optimization-techniques">Few optimization techniques</h2>
           <p>
-            In this section we will discuss usage of spatial hashmaps and modified Bresenham's line algorithm. I will not go into implementation details as they are commonly available on the Internet. I will, however, provide you with some demos to try these out and come up with your own ideas on where to use them.
+            In this section, we will discuss the usage of spatial hashmaps and modified Bresenham's line algorithm. I will not go into implementation details as they are commonly available on the Internet. I will, however, provide you with some demos to try these out and come up with your own ideas on where to use them.
           </p>
 
           <h3 id="spatial-hashmaps">Spatial hashmaps</h3>
           <p>
-            Currently, we are drawing all polygons and calculating all intersection points, but it is pretty much useless. In most cases, our play area will be much bigger than viewport. By using spatial hashmaps, we can quickly determine which polygons are visible to the player and perform adequate calculations. <br>
+            Currently, we are drawing all polygons and calculating all intersection points, but it is pretty much useless. In most cases, our play area will be much bigger than the viewport. By using spatial hashmaps, we can quickly determine which polygons are visible to the player and perform adequate calculations. <br>
             <br>
-            Basically, we want to divide play area into smaller cells (of predefined size). Each cell consists of a list containing our shapes (most likely line-segments). If a single shape spans across multiple cells, it will be included in all of them. <br>
+            Basically, we want to divide the play area into smaller cells (of predefined size). Each cell consists of a list containing our shapes (most likely line-segments). If a single shape spans across multiple cells, it will be included in all of them. <br>
             <br>
-            The name of this technique suggests using hashmaps (eg. cell's would be named something like X+":"+Y), but in our case, using a simple 2D array might be more desired. <br>
+            The name of this technique suggests using hashmaps (eg. cells would be named something like X+":"+Y), but in our case, using a simple 2D array might be more desired. <br>
             <br>
             Here is a simple demo showing how it might work:
           </p>
@@ -708,7 +708,7 @@
 
           <h3 id="bresenham-based-supercover-line-algorithm">Bresenham-based supercover line algorithm</h3>
           <p>
-            Well, it is high time we did something with finding the closest intersection points. Using spatial hashmaps and modified Bresenham's line algorithm, we can traverse the grid in an efficient manner making as few checks as required. The algorithm should stop when the first cell with intersection point is found. <br>
+            Well, it is high time we did something with finding the closest intersection points. Using spatial hashmaps and modified Bresenham's line algorithm, we can traverse the grid in an efficient manner making as few checks as required. The algorithm should stop when the first cell with an intersection point is found. <br>
             <br>
             You can read more about Bresenham's line algorithm <a href="https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm">here</a>, and its modified version <a href="https://playtechs.blogspot.com/2007/03/raytracing-on-grid.html">here</a>.
           </p>
@@ -718,7 +718,7 @@
           </figure>
 
           <h2 id="everything-has-an-end">Everything has an end</h2>
-          <small>Sorry, unfortunately I mean this article and not rays.</small>
+          <small>Sorry, unfortunately, I mean this article and not rays.</small>
           <p>
             I think I have covered everything to help you getting started. I will try my best to expand it in the future if I spot something needing an additional explanation. I have also created <a href="https://sszczep.github.io/ray-casting-in-2d-game-engines/cheatsheet.html">a little cheatsheet</a> for you to quickly recap some of the topics and derived formulas. <br>
             <br>
