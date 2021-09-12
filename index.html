@@ -32,6 +32,7 @@
     <script src="assets/demos/demo11.js" async></script>
     <script src="assets/demos/demo12.js" async></script>
     <script src="assets/demos/demo13.js" async></script>
+    <script src="assets/demos/demo14.js" async></script>
 
     <title>Ray casting in 2D game engines</title>
   </head>
@@ -82,6 +83,7 @@
                 <a class="nav-link" href="spatial-hashmaps">Spatial hashmaps</a>
                 <a class="nav-link" href="#bresenham-based-supercover-line-algorithm">Bresenham-based supercover line algorithm</a>
               </nav>
+              <a class="nav-link" href="#everything-has-an-end">Everything has an end</a>
             </nav>
           </nav>
         </div>
@@ -705,6 +707,25 @@
           </p>
 
           <h3 id="bresenham-based-supercover-line-algorithm">Bresenham-based supercover line algorithm</h3>
+          <p>
+            Well, it is high time we did something with finding the closest intersection points. Using spatial hashmaps and modified Bresenham's line algorithm, we can traverse the grid in an efficient manner making as few checks as required. The algorithm should stop when the first cell with intersection point is found. <br>
+            <br>
+            You can read more about Bresenham's line algorithm <a href="https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm">here</a>, and its modified version <a href="https://playtechs.blogspot.com/2007/03/raytracing-on-grid.html">here</a>.
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <canvas id="demo14" class="figure-img img-fluid"></canvas>
+            <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo14.js">Demo 14</a> - Bresenham-based supercover line algorithm</figcaption>
+          </figure>
+
+          <h2 id="everything-has-an-end">Everything has an end</h2>
+          <small>Sorry, unfortunately I mean this article and not rays.</small>
+          <p>
+            I think I have covered everything to help you getting started. I will try my best to expand it in the future if I spot something needing an additional explanation. I have also created <a href="https://sszczep.github.io/ray-casting-in-2d-game-engines/cheatsheet.html">a little cheatsheet</a> for you to quickly recap some of the topics and derived formulas. <br>
+            <br>
+            If you enjoyed the read be sure to star and watch <a href="https://github.com/sszczep/ray-casting-in-2d-game-engines">this repository on GitHub</a>. You might also want to follow <a href="https://github.com/sszczep">me</a> for more content like that in the future. Also do not forget to create an issue if one of the topics seems to be poorly explained or you have other suggestions. <br>
+            <br>
+            Stay tuned for more!
+          </p>
         </div>
       </div>
     </div>
